@@ -66,19 +66,6 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-/* ---------- Sao chép số tài khoản ---------- */
-document.addEventListener("click", async (e) => {
-  const btn = e.target.closest("[data-copy]");
-  if (!btn) return;
-  try {
-    await navigator.clipboard.writeText(btn.dataset.copy);
-    btn.textContent = "Đã chép ✓";
-  } catch {
-    btn.textContent = "Chép thủ công nhé";
-  }
-  setTimeout(() => (btn.textContent = "Sao chép"), 2000);
-});
-
 /* ---------- Nhạc nền (YouTube, chỉ phát khi bấm) ---------- */
 const VIDEO_ID = "wa-V13gNSOw";
 const musicBtns = $$("#music-btn, #music-fab");
