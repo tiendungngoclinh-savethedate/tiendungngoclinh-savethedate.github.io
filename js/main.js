@@ -68,16 +68,15 @@ setInterval(tick, 1000);
 
 /* ---------- Nhạc nền (YouTube, chỉ phát khi bấm) ---------- */
 const VIDEO_ID = "wa-V13gNSOw";
-const musicBtns = $$("#music-btn, #music-fab");
+const fab = $("#music-fab");
 const musicSlot = $("#music-slot");
 let musicOn = false;
 
 function setMusic(on) {
+  if (on === musicOn && (!on || musicSlot.firstChild)) return; // đã đúng trạng thái: không tạo trình phát thứ hai
   musicOn = on;
-  musicBtns.forEach((b) => {
-    b.setAttribute("aria-pressed", String(on));
-    b.setAttribute("aria-label", on ? "Tắt nhạc" : "Bật nhạc");
-  });
+  fab.setAttribute("aria-pressed", String(on));
+  fab.setAttribute("aria-label", on ? "Tắt nhạc" : "Bật nhạc");
   if (on) {
     const f = document.createElement("iframe");
     f.title = "Nhạc nền";
@@ -88,10 +87,9 @@ function setMusic(on) {
     musicSlot.replaceChildren();
   }
 }
-musicBtns.forEach((b) => b.addEventListener("click", () => setMusic(!musicOn)));
+fab.addEventListener("click", () => setMusic(!musicOn));
 
 // Nút nhạc nổi chỉ hiện từ khi mở phong bì trở đi
-const fab = $("#music-fab");
 const syncFab = () => { fab.hidden = (ROUTES[location.hash] ?? "envelope") === "envelope"; };
 window.addEventListener("hashchange", syncFab);
 syncFab();

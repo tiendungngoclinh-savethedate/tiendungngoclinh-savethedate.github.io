@@ -149,14 +149,6 @@
     <h1 class="script script--xxl">Our moments</h1>
   </header>
 
-  <div class="music" data-reveal>
-    <button class="music__btn" id="music-btn" type="button" aria-pressed="false" aria-label="Bật nhạc">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="2.5"/><circle cx="17" cy="16" r="2.5"/></svg>
-    </button>
-    <p>Tap the icon to hear the song<br>that’s been part of our story</p>
-    <div id="music-slot" aria-hidden="true"></div>
-  </div>
-
   <div class="outdoor">
     <p class="script script--xl outdoor__a" data-reveal>Eternally his,</p>
     <div class="outdoor__grid">
@@ -224,7 +216,10 @@
   </form>
 </dialog>
 
-<!-- Nút bật/tắt nhạc nổi -->
+<!-- Khung chứa trình phát nhạc nền (ẩn) -->
+<div id="music-slot" aria-hidden="true"></div>
+
+<!-- Nút bật/tắt nhạc nổi (duy nhất, dùng cho mọi trang) -->
 <button class="music-fab" id="music-fab" type="button" aria-pressed="false" aria-label="Bật nhạc" hidden>
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="2.5"/><circle cx="17" cy="16" r="2.5"/><path class="music-fab__off" d="M3 3l18 18"/></svg>
 </button>

@@ -200,11 +200,6 @@ a { color: inherit; }
 
 /* ============ LOVE STORY ============ */
 .story-head { padding: var(--space-section) 1rem clamp(2rem, 4vw, 4rem); display: grid; gap: 0.6rem; justify-items: center; }
-.music { background: var(--bordeaux-900) url("../assets/decor/bg-damask.jpg") center / cover; color: var(--cream-50); padding: clamp(2.5rem, 5vw, 4.5rem) 1rem; display: grid; gap: 1.2rem; justify-items: center; font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1.15rem); }
-.music__btn { width: clamp(84px, 9vw, 120px); aspect-ratio: 1; border-radius: 50%; border: 0; background: var(--cream-50); color: var(--bordeaux-700); display: grid; place-items: center; transition: transform 0.4s var(--ease-out), box-shadow 0.4s; }
-.music__btn svg { width: 48%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.music__btn:hover { transform: scale(1.06); }
-.music__btn[aria-pressed="true"] { animation: beat 1.4s ease-in-out infinite; box-shadow: 0 0 0 10px rgb(251 249 247 / 0.14); }
 @keyframes beat { 50% { transform: scale(1.08); } }
 #music-slot iframe { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; border: 0; }
 
