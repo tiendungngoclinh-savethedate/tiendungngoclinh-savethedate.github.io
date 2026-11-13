@@ -163,8 +163,9 @@ function setMusic(on) {
   if (on) {
     const f = document.createElement("iframe");
     f.title = "Nhạc nền";
-    f.allow = "autoplay";
-    f.src = `https://www.youtube-nocookie.com/embed/${VIDEO_ID}?autoplay=1&loop=1&playlist=${VIDEO_ID}&controls=0&playsinline=1`;
+    f.allow = "autoplay; encrypted-media";
+    f.referrerPolicy = "strict-origin-when-cross-origin";
+    f.src = `https://www.youtube-nocookie.com/embed/${VIDEO_ID}?autoplay=1&loop=1&playlist=${VIDEO_ID}&controls=0&playsinline=1&origin=${encodeURIComponent(location.origin)}`;
     musicSlot.replaceChildren(f);
   } else {
     musicSlot.replaceChildren();
