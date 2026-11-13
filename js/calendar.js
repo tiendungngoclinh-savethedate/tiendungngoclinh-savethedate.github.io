@@ -22,13 +22,15 @@ export function toUtcStamp(ms) {
 
 const escapeText = (s) => s.replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
 
+const utf8Length = (ch) => new TextEncoder().encode(ch).length; // chạy được cả ở trình duyệt (không cần Buffer của Node)
+
 /** Gập dòng theo RFC 5545: tối đa 75 byte/dòng, dòng nối tiếp bắt đầu bằng 1 dấu cách; không cắt giữa ký tự UTF-8. */
 function fold(line) {
   const out = [];
   let cur = "";
   let bytes = 0;
   for (const ch of line) {
-    const n = Buffer.byteLength(ch);
+    const n = utf8Length(ch);
     const limit = out.length === 0 ? 75 : 74; // dòng nối tiếp tốn 1 byte cho dấu cách đầu dòng
     if (bytes + n > limit) { out.push(cur); cur = ""; bytes = 0; }
     cur += ch;
@@ -39,27 +41,18 @@ function fold(line) {
 }
 
 export function buildIcs(ev, dtstamp = toUtcStamp(Date.now())) {
+  // Dùng giờ UTC và bỏ khối múi giờ/METHOD: bản tối giản nhất, iPhone (Safari) và Apple Lịch đọc chắc chắn, Outlook/Android cũng đọc được.
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//Tien Dung & Ngoc Linh//Wedding//VI",
     "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
-    `X-WR-TIMEZONE:${TZID}`,
-    "BEGIN:VTIMEZONE",
-    `TZID:${TZID}`,
-    "BEGIN:STANDARD",
-    "DTSTART:19700101T000000",
-    "TZOFFSETFROM:+0700",
-    "TZOFFSETTO:+0700",
-    "TZNAME:ICT",
-    "END:STANDARD",
-    "END:VTIMEZONE",
     "BEGIN:VEVENT",
     `UID:${ev.uid}`,
     `DTSTAMP:${dtstamp}`,
-    `DTSTART;TZID=${TZID}:${toVnStamp(ev.start)}`,
-    `DTEND;TZID=${TZID}:${toVnStamp(ev.end)}`,
+    `DTSTART:${toUtcStamp(ev.start)}`,
+    `DTEND:${toUtcStamp(ev.end)}`,
+    "STATUS:CONFIRMED",
     `SUMMARY:${escapeText(ev.title)}`,
     `DESCRIPTION:${escapeText(ev.description)}`,
     `LOCATION:${escapeText(ev.location)}`,

@@ -1,5 +1,5 @@
 import { WEDDING_AT, timeLeft, pad2 } from "./countdown.js";
-import { detectPlatform } from "./calendar.js";
+import { EVENT, buildIcs, detectPlatform } from "./calendar.js";
 import { fetchWishes, normalizeWishes, splitRows, wishCard } from "./wishes.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -325,4 +325,17 @@ loadWishes();
   other.classList.add("btn--ghost");
   best.dataset.best = "";
   box.prepend(best); // nút hợp với máy lên đầu
+
+  // iPhone: Safari có khi im lặng không làm gì với link tới file .ics. Tạo file lịch ngay trong trang (đúng UTF-8, MIME text/calendar)
+  // rồi mở bằng chính thao tác bấm của khách; nếu trình duyệt không hỗ trợ thì giữ link file như cũ.
+  if (platform === "ios" && window.Blob && window.URL?.createObjectURL) {
+    pick("ics").addEventListener("click", (e) => {
+      try {
+        const url = URL.createObjectURL(new Blob([buildIcs(EVENT)], { type: "text/calendar;charset=utf-8" }));
+        e.preventDefault();
+        location.href = url;
+        setTimeout(() => URL.revokeObjectURL(url), 120000);
+      } catch { /* để link .ics gốc chạy */ }
+    });
+  }
 })();

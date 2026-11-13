@@ -2,26 +2,16 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Tien Dung & Ngoc Linh//Wedding//VI
 CALSCALE:GREGORIAN
-METHOD:PUBLISH
-X-WR-TIMEZONE:Asia/Ho_Chi_Minh
-BEGIN:VTIMEZONE
-TZID:Asia/Ho_Chi_Minh
-BEGIN:STANDARD
-DTSTART:19700101T000000
-TZOFFSETFROM:+0700
-TZOFFSETTO:+0700
-TZNAME:ICT
-END:STANDARD
-END:VTIMEZONE
 BEGIN:VEVENT
 UID:tiendung-ngoclinh-20261129@dung-linh-wedding
 DTSTAMP:20260101T000000Z
-DTSTART;TZID=Asia/Ho_Chi_Minh:20261129T100000
-DTEND;TZID=Asia/Ho_Chi_Minh:20261129T130000
+DTSTART:20261129T030000Z
+DTEND:20261129T060000Z
+STATUS:CONFIRMED
 SUMMARY:Lễ cưới Tiến Dũng & Ngọc Linh
 DESCRIPTION:Tiệc cưới lúc 10:00 (giờ Việt Nam). Trân trọng kí
  nh mời bạn đến dự tiệc cưới của Tiến Dũng và Ngọc Li
- nh. Thiệp mời: https://dung-linh-wedding.github.io
+ nh. Thiệp mời: https://tiendungngoclinh-savethedate.io.vn
 LOCATION:Nhà văn hoá Tổ dân phố 12\, Đường Mậu Lương\, Phư
  ờng Kiến Hưng\, Hà Nội
 BEGIN:VALARM
