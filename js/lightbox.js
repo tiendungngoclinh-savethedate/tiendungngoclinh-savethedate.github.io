@@ -54,7 +54,6 @@ export function initLightbox(photos, dialog) {
   if (!photos.length || !dialog) return;
   const img = dialog.querySelector(".lightbox__img");
   const count = dialog.querySelector(".lightbox__count");
-  const cap = dialog.querySelector(".lightbox__cap");
   const stage = dialog.querySelector(".lightbox__stage");
   const level = dialog.querySelector(".lightbox__level");
   const btnIn = dialog.querySelector('[data-zoom="in"]');
@@ -104,7 +103,6 @@ export function initLightbox(photos, dialog) {
     img.src = srcOf(p);
     if (img.complete && img.naturalWidth) img.classList.remove("is-loading");
     img.alt = p.alt;
-    cap.textContent = p.alt;
     count.textContent = `${index + 1} / ${n}`;
     preload(index + 1);
     preload(index - 1);
@@ -142,7 +140,7 @@ export function initLightbox(photos, dialog) {
     if (e.target.closest(".lightbox__nav--prev")) return go(-1);
     if (e.target.closest(".lightbox__nav--next")) return go(1);
     // chạm vào nút đóng hoặc vùng tối quanh ảnh thì đóng; chạm vào chính ảnh thì giữ nguyên
-    if (e.target.closest("[data-close-lightbox]") || (!e.target.closest(".lightbox__img") && !e.target.closest(".lightbox__cap") && !e.target.closest(".lightbox__zoom"))) dialog.close();
+    if (e.target.closest("[data-close-lightbox]") || (!e.target.closest(".lightbox__img") && !e.target.closest(".lightbox__zoom"))) dialog.close();
   });
 
   dialog.addEventListener("keydown", (e) => {

@@ -389,8 +389,8 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .lightbox__img { display: block; width: auto; height: auto; max-width: min(94vw, 880px); max-height: calc(100svh - 9rem); object-fit: contain; border-radius: 4px; box-shadow: 0 24px 60px rgb(0 0 0 / 0.55); touch-action: none; user-select: none; -webkit-user-drag: none; transform-origin: center; transition: opacity 0.25s ease, transform 0.22s var(--ease-out); cursor: zoom-in; will-change: transform; }
 .lightbox__stage { touch-action: none; }
 .lightbox.is-zoomed .lightbox__img { cursor: grab; }
-.lightbox__cap, .lightbox__count { transition: opacity 0.2s; }
-.lightbox.is-zoomed .lightbox__cap, .lightbox.is-zoomed .lightbox__count { opacity: 0; pointer-events: none; }
+.lightbox__count { transition: opacity 0.2s; }
+.lightbox.is-zoomed .lightbox__count { opacity: 0; pointer-events: none; }
 .lightbox.is-dragging .lightbox__img { transition: opacity 0.25s ease; cursor: grabbing; }
 .lightbox__zoom { position: absolute; z-index: 2; top: 0.7rem; left: 0.7rem; display: flex; align-items: center; height: 46px; border-radius: 23px; background: rgb(22 7 9 / 0.5); backdrop-filter: blur(6px); overflow: hidden; }
 .lightbox__zoom button { height: 100%; border: 0; background: transparent; color: var(--cream-50); cursor: pointer; font: inherit; -webkit-tap-highlight-color: transparent; transition: background 0.25s, opacity 0.25s; }
@@ -401,7 +401,6 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .lightbox__img.is-loading { opacity: 0; }
 .lightbox[open] .lightbox__img:not(.is-loading) { animation: lb-in 0.32s var(--ease-out); }
 @keyframes lb-in { from { transform: scale(0.96); } }
-.lightbox__cap { font-style: italic; font-size: 0.95rem; opacity: 0.8; text-align: center; max-width: 30ch; }
 .lightbox__count { position: absolute; left: 0; right: 0; bottom: 1rem; margin: 0; text-align: center; letter-spacing: 0.3em; font-size: 0.85rem; text-indent: 0.3em; opacity: 0.75; }
 .lightbox__close, .lightbox__nav { position: absolute; z-index: 2; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgb(22 7 9 / 0.5); backdrop-filter: blur(6px); color: var(--cream-50); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.25s; }
 @media (hover: hover) { .lightbox__close:hover, .lightbox__nav:hover { background: rgb(251 249 247 / 0.3); } }
