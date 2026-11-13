@@ -383,7 +383,7 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .gift-dialog[open] { display: grid; gap: 0.9rem; justify-items: center; }
 .gift-dialog::backdrop { background: rgb(62 21 25 / 0.62); backdrop-filter: blur(3px); }
 .gift-dialog__icon { width: 64px; height: auto; }
-.gift-dialog__close { position: absolute; top: 0.6rem; right: 0.8rem; background: none; border: 0; font-size: 1.2rem; color: var(--bordeaux-500); cursor: pointer; padding: 0.3rem; }
+.gift-dialog__close { position: absolute; top: 0.3rem; right: 0.3rem; width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 0; border-radius: 50%; font-size: 1.15rem; color: var(--bordeaux-500); cursor: pointer; -webkit-tap-highlight-color: transparent; }
 @media (hover: hover) { .music-fab:hover { transform: scale(1.08); } }
 .music-fab svg { width: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .music-fab[aria-pressed="false"] .music-fab__off { display: block; }
@@ -534,23 +534,40 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 }
 
 /* Hộp quà trong trang: bấm để mở mã QR, lắc nhẹ để mời chạm */
-.gift-open { display: block; margin: 0 auto; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 14px; -webkit-tap-highlight-color: transparent; transform-origin: 50% 88%; animation: gift-shake 3.6s ease-in-out infinite; transition: filter 0.3s var(--ease-out); }
+.gift-open .detail__icon--sm { width: clamp(116px, 32vw, 150px); }
+.gift-open { display: block; margin: 0 auto; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 14px; -webkit-tap-highlight-color: transparent; transform-origin: 50% 88%; animation: gift-shake 2.4s ease-in-out infinite; transition: filter 0.3s var(--ease-out); }
 @media (hover: hover) { .gift-open:hover { animation-play-state: paused; filter: drop-shadow(0 8px 14px rgb(91 34 41 / 0.28)); } }
 .gift-open:active { transform: scale(0.96); animation: none; }
 @keyframes gift-shake {
-  0%, 52%, 100% { transform: rotate(0) translateY(0); }
-  55% { transform: rotate(-9deg) translateY(-5px); }
-  59% { transform: rotate(8deg) translateY(-3px); }
-  63% { transform: rotate(-6deg) translateY(-2px); }
-  67% { transform: rotate(5deg) translateY(-1px); }
-  71% { transform: rotate(-2.5deg) translateY(0); }
-  75% { transform: rotate(0) translateY(0); }
+  0%, 56%, 100% { transform: rotate(0) translateY(0) scale(1); }
+  3% { transform: rotate(-14deg) translateY(-9px) scale(1.07); }
+  8% { transform: rotate(12deg) translateY(-6px) scale(1.05); }
+  13% { transform: rotate(-11deg) translateY(-7px) scale(1.05); }
+  18% { transform: rotate(9deg) translateY(-4px) scale(1.03); }
+  23% { transform: rotate(-7deg) translateY(-3px) scale(1.02); }
+  28% { transform: rotate(5deg) translateY(-2px) scale(1.01); }
+  33% { transform: rotate(-3deg) translateY(-1px); }
+  38% { transform: rotate(1.5deg) translateY(0); }
+  42% { transform: rotate(0) translateY(0) scale(1); }
 }
-.detail__hint { margin-top: 0.9rem; font-style: italic; font-size: clamp(0.9rem, 0.86rem + 0.25vw, 1.05rem); color: var(--bordeaux-500); }
 @media (prefers-reduced-motion: reduce) { .gift-open { animation: none; } }
-.gift-dialog .qr img { width: min(220px, 58vw); }
+/* Popup quà: QR tự co theo chiều cao màn để nút lưu ảnh luôn nằm trong tầm nhìn, không phải cuộn */
+.gift-dialog .qr { margin: 0.2rem 0 0; gap: 0.7rem; }
+.gift-dialog .qr img { width: min(220px, 58vw, calc((100svh - 372px) * 0.675)); min-width: 140px; }
+.gift-dialog .qr figcaption { max-width: 26ch; font-size: 0.9rem; line-height: 1.45; text-wrap: balance; }
+.gift-dialog__lead { margin: 0; max-width: 26ch; font-weight: 700; font-size: 1.08rem; line-height: 1.45; text-wrap: balance; }
+.gift-dialog__note { margin: 0; font-style: italic; font-size: 0.98rem; opacity: 0.85; }
+.gift-dialog__save { display: inline-block; padding: 0.7rem 1.5rem; border: 1px solid var(--bordeaux-500); border-radius: 2px; color: var(--bordeaux-500); text-decoration: none; letter-spacing: 0.2em; font-size: 0.85rem; text-indent: 0.2em; transition: background 0.25s, color 0.25s; }
+@media (hover: hover) { .gift-dialog__save:hover { background: var(--bordeaux-500); color: var(--cream-50); } }
+.gift-dialog__save:active { background: var(--bordeaux-500); color: var(--cream-50); }
+@media (max-height: 720px) {
+  .gift-dialog { padding-block: 1.1rem; }
+  .gift-dialog[open] { gap: 0.5rem; }
+  .gift-dialog__icon { width: 46px; }
+  .gift-dialog .script--lg { font-size: 1.65rem; }
+}
+@media (max-height: 600px) { .gift-dialog .qr figcaption { display: none; } }
 .gift-dialog .script--lg { font-size: clamp(1.8rem, 1.4rem + 1.6vw, 2.3rem); line-height: 1.15; }
-.gift-dialog .detail__gift { font-size: 1rem; margin: 0; }
 
 /* Đồng hồ đếm ngược: bản desktop khớp embed Canva (Cardo, số 17.4cqw, nhãn 4cqw, dấu ":" giữa các cột) */
 .countdown .cd-sep { display: grid; min-width: 0; padding: 0; }
@@ -630,6 +647,7 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   #view-details .detail__gift { font-size: calc(22.2 * var(--du)); line-height: calc(30.5 * var(--du)); max-width: calc(470 * var(--du)); letter-spacing: 0; }
   #view-details .detail__icon { width: calc(157 * var(--du)); }
   #view-details .detail__icon--sm { width: calc(121 * var(--du)); }
+  #view-details .gift-open .detail__icon--sm { width: calc(165 * var(--du)); }
 
   /* khối 1: icon top 70 -> tiêu đề 226 -> đường kẻ 340 -> các dòng -> đường kẻ 825 -> link 900 */
   #view-details .detail:nth-child(1) { padding: calc(70 * var(--du)) 0 calc(132 * var(--du)); }
@@ -653,7 +671,6 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   #view-details .detail:nth-child(3) .detail__sub { margin-top: calc(24 * var(--du)); }
   #view-details .detail:nth-child(3) .detail__gift:nth-of-type(1) { margin-top: calc(14 * var(--du)); }
   #view-details .detail:nth-child(3) .detail__gift + .detail__gift { margin-top: calc(61 * var(--du)); }
-  #view-details .detail:nth-child(3) .detail__hint { margin-top: calc(48 * var(--du)); font-size: calc(22.2 * var(--du)); line-height: calc(30 * var(--du)); }
 }
 @media (min-width: 1110px) {
   #view-details .detail { --du: min(1.08px, calc(100cqw / 1265), calc(0.3675px + 0.05cqw)); }
