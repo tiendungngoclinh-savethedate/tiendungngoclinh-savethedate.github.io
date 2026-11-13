@@ -305,8 +305,6 @@ a { color: inherit; }
 
 /* ============ LOVE STORY ============ */
 @keyframes beat { 50% { transform: scale(1.08); } }
-/* YouTube không phát trình nhúng nhỏ hơn 200×200 nên giữ đủ cỡ, chỉ làm trong suốt và đặt ngoài tầm tương tác */
-#music-slot iframe { position: fixed; left: 0; bottom: 0; width: 200px; height: 200px; opacity: 0; pointer-events: none; border: 0; z-index: -1; }
 
 /* Mọi số đo lấy từ Canva (khổ 520). --u = 1/520 bề rộng khung nên cả khối co giãn đúng tỉ lệ */
 .sec { position: relative; overflow: hidden; background: #fbfaf9; container-type: inline-size; }

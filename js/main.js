@@ -148,27 +148,28 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-/* ---------- Nhạc nền (YouTube, chỉ phát khi bấm) ---------- */
-const VIDEO_ID = "wa-V13gNSOw";
+/* ---------- Nhạc nền (file MP3, chỉ phát khi bấm) ---------- */
 const fab = $("#music-fab");
-const musicSlot = $("#music-slot");
+const music = new Audio("assets/audio/chi-can-co-nhau.mp3");
+music.loop = true;
+music.preload = "none"; // chỉ tải khi khách bật nhạc
 let musicOn = false;
 
-function setMusic(on) {
-  if (on === musicOn && (!on || musicSlot.firstChild)) return; // đã đúng trạng thái: không tạo trình phát thứ hai
+function renderMusic(on) {
   musicOn = on;
   fab.setAttribute("aria-pressed", String(on));
   fab.setAttribute("aria-label", on ? "Tắt nhạc" : "Bật nhạc");
   $$("[data-play-music]").forEach((b) => { b.setAttribute("aria-pressed", String(on)); b.setAttribute("aria-label", on ? "Tắt nhạc" : "Bật nhạc"); });
+}
+
+function setMusic(on) {
+  if (on === musicOn) return;
+  renderMusic(on);
   if (on) {
-    const f = document.createElement("iframe");
-    f.title = "Nhạc nền";
-    f.allow = "autoplay; encrypted-media";
-    f.referrerPolicy = "strict-origin-when-cross-origin";
-    f.src = `https://www.youtube-nocookie.com/embed/${VIDEO_ID}?autoplay=1&loop=1&playlist=${VIDEO_ID}&controls=0&playsinline=1&origin=${encodeURIComponent(location.origin)}`;
-    musicSlot.replaceChildren(f);
+    // Trình duyệt từ chối phát (ví dụ chưa có thao tác của khách) thì trả nút về trạng thái tắt
+    music.play().catch(() => renderMusic(false));
   } else {
-    musicSlot.replaceChildren();
+    music.pause();
   }
 }
 fab.addEventListener("click", () => setMusic(!musicOn));
