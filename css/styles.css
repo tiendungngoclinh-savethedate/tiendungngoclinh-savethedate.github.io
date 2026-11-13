@@ -354,18 +354,33 @@ a { color: inherit; }
 .music-fab { position: fixed; z-index: 20; right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgb(184 147 90 / 0.5); background: rgb(251 249 247 / 0.9); color: var(--bordeaux-700); display: grid; place-items: center; backdrop-filter: blur(6px); box-shadow: 0 6px 18px rgb(62 21 25 / 0.22); transition: transform 0.3s var(--ease-out); }
 .gift-fab { position: fixed; z-index: 20; right: calc(max(1rem, env(safe-area-inset-right)) + 48px + 0.7rem); bottom: max(1rem, env(safe-area-inset-bottom)); width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgb(184 147 90 / 0.5); background: rgb(251 249 247 / 0.9); color: var(--bordeaux-700); display: grid; place-items: center; backdrop-filter: blur(6px); box-shadow: 0 6px 18px rgb(62 21 25 / 0.22); transition: transform 0.3s var(--ease-out); }
 .gift-fab[hidden] { display: none; }
-.gift-fab:hover { transform: scale(1.08) rotate(-6deg); }
-.gift-fab svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* Hai nút nổi luôn cùng cỡ, icon luôn chính giữa; hiệu ứng hover chỉ cho máy có chuột (trên điện thoại hover bị "dính" sau khi chạm làm nút to/nghiêng) */
+.gift-fab, .music-fab { padding: 0; -webkit-tap-highlight-color: transparent; }
+.gift-fab svg, .music-fab svg { display: block; flex: none; }
+@media (hover: hover) { .gift-fab:hover { transform: scale(1.08) rotate(-6deg); } }
+.gift-fab svg { width: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .gift-dialog { border: 0; padding: clamp(1.6rem, 5vw, 2.4rem) clamp(1.2rem, 5vw, 2.4rem); background: var(--cream-50); color: var(--bordeaux-700); width: min(420px, calc(100vw - 2rem)); max-height: calc(100svh - 2rem); overflow: auto; border-radius: 2px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.4); text-align: center; }
 .gift-dialog[open] { display: grid; gap: 0.9rem; justify-items: center; }
 .gift-dialog::backdrop { background: rgb(62 21 25 / 0.62); backdrop-filter: blur(3px); }
 .gift-dialog__icon { width: 64px; height: auto; }
 .gift-dialog__close { position: absolute; top: 0.6rem; right: 0.8rem; background: none; border: 0; font-size: 1.2rem; color: var(--bordeaux-500); cursor: pointer; padding: 0.3rem; }
-.music-fab:hover { transform: scale(1.08); }
-.music-fab svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) { .music-fab:hover { transform: scale(1.08); } }
+.music-fab svg { width: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .music-fab[aria-pressed="false"] .music-fab__off { display: block; }
 .music-fab[aria-pressed="true"] .music-fab__off { display: none; }
-.music-fab[aria-pressed="true"] { animation: beat 2s ease-in-out infinite; }
+/* Cả hai icon cùng "rung" để thu hút chú ý: lắc nhanh một nhịp rồi nghỉ, nút giữ nguyên cỡ 48px */
+@keyframes fab-wiggle {
+  0%, 62%, 100% { transform: rotate(0); }
+  66% { transform: rotate(-16deg); }
+  70% { transform: rotate(14deg); }
+  74% { transform: rotate(-11deg); }
+  78% { transform: rotate(8deg); }
+  82% { transform: rotate(-4deg); }
+  86% { transform: rotate(0); }
+}
+.gift-fab svg, .music-fab svg { transform-origin: 50% 50%; animation: fab-wiggle 3.2s ease-in-out infinite; }
+.music-fab svg { animation-delay: 0.35s; }
+@media (prefers-reduced-motion: reduce) { .gift-fab svg, .music-fab svg { animation: none; } }
 
 /* ============ RSVP DIALOG ============ */
 .rsvp { border: 0; padding: 0; background: var(--cream-50); color: var(--bordeaux-700); width: min(520px, calc(100vw - 2rem)); max-height: calc(100svh - 2rem); border-radius: 2px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.4); text-align: left; }
