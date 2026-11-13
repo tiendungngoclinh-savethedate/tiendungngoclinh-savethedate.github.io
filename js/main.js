@@ -1,6 +1,7 @@
 import { WEDDING_AT, timeLeft, pad2 } from "./countdown.js";
 import { EVENT, buildIcs, detectPlatform, isInAppBrowser } from "./calendar.js";
 import { fetchWishes, normalizeWishes, splitRows, wishCard } from "./wishes.js";
+import { applyNoOrphan, observeNoOrphan } from "./typography.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -9,6 +10,10 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 /* ---------- Footer dùng chung ---------- */
 const footerTpl = $("#footer-tpl");
 $$("[data-footer]").forEach((slot) => slot.replaceWith(footerTpl.content.cloneNode(true)));
+
+/* Chống mồ côi chữ ở mọi đoạn văn (làm trước hiệu ứng gõ chữ để NBSP được giữ lại) */
+applyNoOrphan(document.body);
+observeNoOrphan(document.body);
 
 /* ---------- Router theo hash: #/ · #/invitation · #/details · #/story ---------- */
 const ROUTES = { "": "envelope", "#/": "envelope", "#/invitation": "invitation", "#/details": "details", "#/story": "story" };
@@ -32,8 +37,8 @@ function splitTyping(el) {
       wrap.append(document.createElement("br"));
       return;
     }
-    (node.textContent.match(/\S+|\s+/g) ?? []).forEach((chunk) => {
-      if (/^\s/.test(chunk)) return wrap.append(" ");
+    (node.textContent.match(/[^ \t\r\n]+|[ \t\r\n]+/g) ?? []).forEach((chunk) => { // NBSP nằm trong "từ" nên 2 từ cuối vẫn dính nhau
+      if (/^[ \t\r\n]/.test(chunk)) return wrap.append(" ");
       const word = document.createElement("span");
       word.className = "ty-w";
       [...chunk].forEach((ch) => {
@@ -181,7 +186,7 @@ $$("[data-play-music]").forEach((b) => b.addEventListener("click", () => setMusi
 const giftFab = $("#gift-fab");
 const giftDialog = $("#gift-dialog");
 const syncFab = () => { const hide = (ROUTES[location.hash] ?? "envelope") === "envelope"; fab.hidden = hide; giftFab.hidden = hide; };
-giftFab.addEventListener("click", () => giftDialog.showModal());
+document.addEventListener("click", (e) => { if (e.target.closest("[data-open-gift]") && !giftDialog.open) giftDialog.showModal(); }); // nút nổi và hộp quà trong trang đều mở cùng một hộp thoại
 giftDialog.addEventListener("click", (e) => { if (e.target.closest("[data-close-gift]") || e.target === giftDialog) giftDialog.close(); });
 window.addEventListener("hashchange", syncFab);
 syncFab();
@@ -198,39 +203,65 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("[data-close-rsvp]") || e.target === dialog) dialog.close();
 });
 
-form.addEventListener("submit", async (e) => {
+/* Gửi lời chúc: báo "cảm ơn" và hiện thẻ của khách ngay (Apps Script trả lời mất ~1,5–3 giây), việc gửi chạy ngầm.
+   Rớt mạng thì tự thử lại; vẫn chưa được thì lưu trong máy và gửi lại ở lần mở trang sau / khi có mạng. */
+const PENDING_KEY = "wedding-wishes-pending";
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const readPending = () => { try { return JSON.parse(localStorage.getItem(PENDING_KEY) ?? "[]"); } catch { return []; } };
+const writePending = (list) => { try { localStorage.setItem(PENDING_KEY, JSON.stringify(list)); } catch { /* bộ nhớ bị chặn: bỏ qua */ } };
+
+async function postWish(body) {
+  const headers = { "Content-Type": "application/x-www-form-urlencoded" };
+  if (SHEET_URL) {
+    // Google Apps Script không trả CORS nên dùng no-cors: lỗi mạng sẽ throw, còn gửi được thì coi là thành công
+    await fetch(SHEET_URL, { method: "POST", mode: "no-cors", keepalive: true, headers, body });
+    return;
+  }
+  const res = await fetch("/", { method: "POST", keepalive: true, headers, body });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+}
+
+async function deliver(body, tries = 3) {
+  for (let i = 0; i < tries; i++) {
+    try { await postWish(body); return true; } catch (err) {
+      console.error("Gửi lời chúc chưa được", err);
+      if (i < tries - 1) await sleep(1000 * 2 ** i);
+    }
+  }
+  return false;
+}
+
+let flushing = false;
+async function flushPending() {
+  if (flushing) return;
+  flushing = true;
+  try {
+    const queue = readPending();
+    writePending([]);
+    for (const body of queue) if (!(await deliver(body, 1))) writePending([...readPending(), body]);
+  } finally { flushing = false; }
+}
+addEventListener("online", flushPending);
+
+form.addEventListener("submit", (e) => {
   e.preventDefault();
   const submit = $("button[type=submit]", form);
-  submit.disabled = true;
+  const data = new FormData(form);
+  const body = new URLSearchParams(data).toString();
+  submit.disabled = true; // tránh bấm hai lần trong lúc hộp thoại chưa đóng
   msg.classList.remove("is-error");
-  msg.textContent = "Đang gửi…";
-  try {
-    const data = new FormData(form);
-    const body = new URLSearchParams(data).toString();
-    if (SHEET_URL) {
-      // Google Apps Script không trả CORS nên dùng no-cors: lỗi mạng sẽ throw, còn gửi được thì coi là thành công
-      await fetch(SHEET_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body });
-    } else {
-      const res = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    }
-    msg.textContent = "Cảm ơn bạn! Chúng mình đã nhận được xác nhận ♥";
-    showOwnWish(String(data.get("ten") ?? ""), String(data.get("loi-chuc") ?? ""));
-    form.reset();
-    setTimeout(() => dialog.close(), 2200);
-  } catch (err) {
-    console.error("RSVP failed", err);
-    msg.classList.add("is-error");
-    msg.textContent = "Chưa gửi được, bạn thử lại hoặc nhắn trực tiếp cho chúng mình nhé.";
-  } finally {
-    submit.disabled = false;
-  }
+  msg.textContent = "Cảm ơn bạn! Chúng mình đã nhận được lời chúc ♥";
+  showOwnWish(String(data.get("ten") ?? ""), String(data.get("loi-chuc") ?? ""));
+  form.reset();
+  deliver(body).then((ok) => { if (!ok) writePending([...readPending(), body]); });
+  setTimeout(() => { dialog.close(); submit.disabled = false; }, 1600);
 });
 
 /* ---------- Lời chúc: đọc từ Google Sheet ---------- */
 // Ít lời chúc → xếp lưới tĩnh. Nhiều → tự trôi ngang (2 hàng ngược chiều), rê chuột/chạm để dừng, "Xem tất cả" mở hộp cuộn.
 const STATIC_MAX = 5;      // từng này lời chúc trở xuống thì không cần chạy tự động
-const TWO_ROWS_FROM = 10;  // từ đây trở lên chạy 2 hàng
+const TWO_ROWS_FROM = 10;  // từ đây trở lên chạy 2 hàng (chỉ trên màn rộng)
+const wideScreen = matchMedia("(min-width: 700px)");
 const SECONDS_PER_CARD = 7;
 const wishesSec = $("#wishes");
 const wishesList = $("#wishes-list");
@@ -271,13 +302,16 @@ function renderWishes() {
   wishesMarquee.replaceChildren();
   wishesList.replaceChildren();
   if (auto) {
-    wishesMarquee.append(...splitRows(wishes, n >= TWO_ROWS_FROM ? 2 : 1).map(marqueeRow));
+    // Điện thoại chỉ 1 hàng (gọn hơn, thẻ rộng hơn để đọc); màn rộng mới chia 2 hàng ngược chiều
+    wishesMarquee.append(...splitRows(wishes, n >= TWO_ROWS_FROM && wideScreen.matches ? 2 : 1).map(marqueeRow));
   } else {
     wishesList.append(...wishes.slice(0, STATIC_MAX + 1).map((w, i) => wishCard(w, i)));
     revealWishCards($$(".wish", wishesList));
   }
   if (auto) { wishesMarquee.setAttribute("data-reveal", ""); wishesMarquee.classList.remove("is-in"); observeReveals(wishesSec); }
 }
+
+wideScreen.addEventListener("change", () => { if (wishes.length) renderWishes(); }); // xoay máy / đổi cỡ cửa sổ thì chia lại hàng
 
 async function loadWishes() {
   if (!SHEET_URL) return;
@@ -312,6 +346,7 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("[data-close-wishes]") || e.target === wishesDialog) wishesDialog.close();
 });
 loadWishes();
+flushPending(); // gửi nốt lời chúc còn kẹt từ lần trước (nếu có)
 
 /* ---------- Lưu lịch: ưu tiên nút hợp với máy của khách ---------- */
 (() => {

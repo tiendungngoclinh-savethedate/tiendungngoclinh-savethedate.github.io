@@ -1,4 +1,7 @@
 /* Sổ lời chúc: đọc từ Google Sheet (Apps Script ?action=wishes) và vẽ thành các tấm thiệp nhỏ. */
+import { keepTailTogether } from "./typography.js";
+export { keepTailTogether };
+
 const NAME_MAX = 80;
 const TEXT_MAX = 400;
 
@@ -27,11 +30,11 @@ export function wishCard({ name, message }, index) {
   li.style.setProperty("--i", String(index % 9));
   const text = document.createElement("p");
   text.className = "wish__text";
-  text.textContent = message;
+  text.textContent = keepTailTogether(message);
   const by = document.createElement("p");
   by.className = "wish__by";
   by.textContent = name;
-  li.append(by, text);
+  li.append(text, by); // lời chúc trước, tên ký ở cuối (như một tấm thiệp lưu bút)
   return li;
 }
 
