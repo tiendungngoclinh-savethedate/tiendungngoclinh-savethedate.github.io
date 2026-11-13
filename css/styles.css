@@ -269,11 +269,12 @@ a { color: inherit; }
 .cal { position: relative; display: grid; gap: clamp(1.4rem, 3vw, 2.2rem); justify-items: center; align-items: center; width: min(700px, 100%); margin-top: 1.8rem; padding: clamp(1.8rem, 4vw, 2.6rem) clamp(1.2rem, 4vw, 2.4rem); background: var(--cream-100); box-shadow: 0 18px 40px rgb(62 21 25 / 0.15); }
 .cal::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgb(184 147 90 / 0.6); pointer-events: none; }
 @media (min-width: 640px) {
-  .cal { grid-template-columns: auto 1fr; column-gap: clamp(2rem, 4vw, 3.2rem); text-align: left; padding: clamp(2.2rem, 4vw, 3rem) clamp(2.2rem, 5vw, 3.4rem); }
-  .cal .cal__body { justify-items: start; justify-self: start; }
+  /* Hai cột (tờ lịch | nội dung) co theo nội dung rồi cả cặp nằm chính giữa khung; chữ và nút căn giữa theo trục của cột phải */
+  .cal { grid-template-columns: auto auto; justify-content: center; column-gap: clamp(2rem, 4vw, 3.2rem); text-align: center; padding: clamp(2.2rem, 4vw, 3rem) clamp(2.2rem, 5vw, 3.4rem); }
+  .cal .cal__body { justify-items: center; justify-self: center; text-align: center; }
   .cal__body > * { margin: 0; }
   .cal__body .script--lg { font-size: clamp(1.9rem, 1.2rem + 1.4vw, 2.5rem); line-height: 1.15; white-space: nowrap; }
-  .cal__hint { text-align: left; }
+  .cal__hint { text-align: center; }
 }
 .cal__page { position: relative; width: 148px; padding-bottom: 1rem; display: grid; justify-items: center; background: var(--cream-50); border-radius: 4px 4px 6px 6px; box-shadow: 0 12px 26px rgb(62 21 25 / 0.22), 0 0 0 1px rgb(184 147 90 / 0.35); transform: rotate(-3deg); overflow: hidden; }
 .cal__page::before, .cal__page::after { content: ""; position: absolute; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--cream-100); box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.4); }
@@ -288,7 +289,11 @@ a { color: inherit; }
 .cal__actions { display: grid; gap: 0.75rem; width: min(300px, 100%); margin-top: 0.4rem; justify-items: stretch; }
 .cal .btn { display: grid; gap: 0.15rem; text-decoration: none; text-align: center; padding: 0.85rem 1.2rem; letter-spacing: 0.2em; font-size: clamp(0.85rem, 0.8rem + 0.25vw, 1rem); }
 .cal .btn small { font-size: 0.78rem; letter-spacing: 0.08em; font-style: italic; opacity: 0.85; }
-.cal .btn[data-best] span::after { content: "  ✓"; letter-spacing: 0; }
+/* Chữ trong nút căn giữa thật: bù khoảng trống letter-spacing ở cuối dòng; dấu ✓ đặt riêng ở mép phải để không kéo lệch chữ */
+.cal .btn span { text-indent: 0.2em; }
+.cal .btn small { text-indent: 0.08em; }
+.cal .btn[data-best] { position: relative; }
+.cal .btn[data-best]::after { content: "✓"; position: absolute; top: 50%; right: 1.1rem; transform: translateY(-50%); letter-spacing: 0; font-size: 1.05rem; line-height: 1; }
 .btn--ghost { background: transparent; color: var(--bordeaux-500); box-shadow: inset 0 0 0 1px var(--bordeaux-500); }
 .btn--ghost:hover { background: var(--bordeaux-500); color: var(--cream-50); }
 .detail__venue { font-weight: 600; letter-spacing: 0.1em; font-size: clamp(1.15rem, 0.9rem + 1.4vw, 2rem); max-width: var(--measure); margin-top: 0.8rem; }
