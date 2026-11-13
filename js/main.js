@@ -152,8 +152,10 @@ setInterval(tick, 1000);
 const fab = $("#music-fab");
 const music = new Audio("assets/audio/chi-can-co-nhau.mp3");
 music.loop = true;
-music.preload = "none"; // chỉ tải khi khách bật nhạc
+music.preload = "none";
 let musicOn = false;
+// Tải sẵn nhạc ngay khi trang rảnh (trước cả khi ảnh các trang sau được tải), để bấm phong bì là có tiếng liền, không phải chờ tải 3,5MB
+window.addEventListener("load", () => idle(() => { if (!musicOn) { music.preload = "auto"; music.load(); } }));
 
 function renderMusic(on) {
   musicOn = on;
