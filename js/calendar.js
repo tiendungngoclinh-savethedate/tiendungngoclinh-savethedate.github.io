@@ -86,3 +86,8 @@ export function detectPlatform(userAgent, maxTouchPoints = 0) {
   if (/Android/i.test(userAgent)) return "android";
   return "other";
 }
+
+/** Trình duyệt tích hợp trong app (Messenger/Facebook/Zalo/Instagram/Line/TikTok...) không mở được file lịch .ics. */
+export function isInAppBrowser(userAgent) {
+  return /FBAN|FBAV|FB_IAB|FBIOS|Messenger|Instagram|Zalo|Line\/|MicroMessenger|TikTok|musical_ly|Snapchat/i.test(userAgent);
+}
