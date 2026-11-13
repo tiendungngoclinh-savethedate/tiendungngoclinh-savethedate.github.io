@@ -338,6 +338,15 @@ a { color: inherit; }
 
 .sec--veil .sec__bg { background: url("../assets/photos/veil-bg.jpg") 26% 0 / max(113.85%, 100%) auto no-repeat; }
 .st__decided { left: calc(60 * var(--u)); top: calc(84 * var(--u)); width: calc(400 * var(--u)); font: 400 calc(33.5 * var(--u)) / calc(33 * var(--u)) "Canva Decided", "Allura", cursive; color: #863538; text-align: left; z-index: 3; }
+/* Cặp chân dung chú rể – cô dâu (cùng bó hoa) đặt ngay sau bộ ảnh studio, hai ảnh ngang hàng cân nhau, đỉnh ảnh vòm như khung vòm ở trang chính */
+.sec--duo { padding: clamp(2.2rem, 6vw, 5rem) 0 clamp(2.6rem, 7vw, 6rem); }
+.duo { --cap: clamp(0.85rem, 0.72rem + 0.6vw, 1.15rem); position: relative; width: min(100% - 2rem, 880px); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.8rem, 3.2vw, 2.6rem); align-items: start; }
+.duo__p { margin: 0; }
+.duo__p img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 999px 999px 6px 6px; box-shadow: 0 14px 34px rgb(62 21 25 / 0.14); }
+.duo__p figcaption { margin-top: 0.9rem; text-align: center; font-style: italic; letter-spacing: 0.04em; color: #863538; font-size: var(--cap); }
+/* Trái tim nằm giữa hai dòng chú thích: căn ngang giữa khe hai ảnh, căn dọc giữa dòng chữ (cao ≈ 1,4 × cỡ chữ) */
+.duo__heart { position: absolute; left: 50%; bottom: calc(var(--cap) * 0.26); width: calc(var(--cap) * 0.9); height: calc(var(--cap) * 0.9); margin-left: calc(var(--cap) * -0.45); fill: #863538; animation: beat 1.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .duo__heart { animation: none; } }
 .v { object-fit: cover; }
 .v--main { left: calc(84 * var(--u)); top: calc(144 * var(--u)); width: calc(236 * var(--u)); height: calc(354 * var(--u)); object-position: 58% 0; z-index: 1; }
 .v--a, .v--b, .v--c { left: calc(297 * var(--u)); width: calc(139 * var(--u)); height: calc(139 * var(--u)); z-index: 2; }
