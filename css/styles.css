@@ -299,7 +299,7 @@ a { color: inherit; }
 .swatches { gap: clamp(0.4rem, 1vw, 0.7rem); }
 .swatches li { width: clamp(58px, 6vw, 75px); }
 .swatches li img { display: block; width: 100%; height: auto; }
-.qr { margin: 0.8rem 0 0; display: grid; gap: 0.9rem; justify-items: center; }
+.qr { margin: 1.3rem 0 0; display: grid; gap: 0.9rem; justify-items: center; }
 .qr img { width: min(290px, 78vw); height: auto; border-radius: 18px; border: 1px solid var(--cream-200); box-shadow: 0 14px 34px rgb(62 21 25 / 0.16); background: #fdf3e4; }
 .qr figcaption { font-style: italic; color: var(--bordeaux-500); font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.15rem); max-width: 22rem; }
 
@@ -586,8 +586,6 @@ a { color: inherit; }
 .hearts__l { left: 58.5%; top: 72%; }
 .detail__divider { display: block; width: min(506px, 80vw); height: auto; margin: 0.4rem 0; }
 
-.bank { margin: 0; text-align: center; font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.5rem); line-height: 1.3; }
-.bank b { font-weight: 700; }
 
 /* ===== Trang "Thời gian & Địa điểm": cỡ chữ/khoảng cách đo từ Canva (c=1265, đơn vị --du) ===== */
 @media (min-width: 900px) {
@@ -606,7 +604,6 @@ a { color: inherit; }
   #view-details .detail__sub { font-size: calc(51.9 * var(--du)); line-height: calc(74 * var(--du)); font-weight: 500; letter-spacing: 0; }
   #view-details .detail__sub.script--xl { font-size: calc(59.3 * var(--du)); line-height: calc(84 * var(--du)); }
   #view-details .detail__gift { font-size: calc(22.2 * var(--du)); line-height: calc(30.5 * var(--du)); max-width: calc(470 * var(--du)); letter-spacing: 0; }
-  #view-details .bank { font-size: calc(22.2 * var(--du)); line-height: calc(30.5 * var(--du)); letter-spacing: 0; }
   #view-details .detail__icon { width: calc(157 * var(--du)); }
   #view-details .detail__icon--sm { width: calc(121 * var(--du)); }
 
@@ -632,8 +629,7 @@ a { color: inherit; }
   #view-details .detail:nth-child(3) .detail__sub { margin-top: calc(24 * var(--du)); }
   #view-details .detail:nth-child(3) .detail__gift:nth-of-type(1) { margin-top: calc(14 * var(--du)); }
   #view-details .detail:nth-child(3) .detail__gift + .detail__gift { margin-top: calc(61 * var(--du)); }
-  #view-details .detail:nth-child(3) .bank { margin-top: calc(31 * var(--du)); }
-  #view-details .detail:nth-child(3) .qr { margin-top: calc(40 * var(--du)); }
+  #view-details .detail:nth-child(3) .qr { margin-top: calc(56 * var(--du)); }
 }
 @media (min-width: 1110px) {
   #view-details .detail { --du: min(1.08px, calc(100cqw / 1265), calc(0.3675px + 0.05cqw)); }
