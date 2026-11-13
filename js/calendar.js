@@ -2,7 +2,7 @@
 export const EVENT = Object.freeze({
   uid: "tiendung-ngoclinh-20261129@dung-linh-wedding",
   title: "Lễ cưới Tiến Dũng & Ngọc Linh",
-  description: "Tiệc cưới lúc 10:00 (giờ Việt Nam). Trân trọng kính mời bạn đến dự tiệc cưới của Tiến Dũng và Ngọc Linh. Thiệp mời: https://tiendungngoclinh-savethedate.github.io",
+  description: "Tiệc cưới lúc 10:00 (giờ Việt Nam). Trân trọng kính mời bạn đến dự tiệc cưới của Tiến Dũng và Ngọc Linh. Thiệp mời: https://tiendungngoclinh-savethedate.io.vn",
   location: "Nhà văn hoá Tổ dân phố 12, Đường Mậu Lương, Phường Kiến Hưng, Hà Nội",
   start: Date.parse("2026-11-29T10:00:00+07:00"),
   end: Date.parse("2026-11-29T13:00:00+07:00"),
