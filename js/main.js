@@ -2,6 +2,7 @@ import { WEDDING_AT, timeLeft, pad2 } from "./countdown.js";
 import { EVENT, buildIcs, detectPlatform, isInAppBrowser } from "./calendar.js";
 import { fetchWishes, normalizeWishes, splitRows, wishCard } from "./wishes.js";
 import { applyNoOrphan, observeNoOrphan } from "./typography.js";
+import { initLightbox } from "./lightbox.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -14,6 +15,9 @@ $$("[data-footer]").forEach((slot) => slot.replaceWith(footerTpl.content.cloneNo
 /* Chống mồ côi chữ ở mọi đoạn văn (làm trước hiệu ứng gõ chữ để NBSP được giữ lại) */
 applyNoOrphan(document.body);
 observeNoOrphan(document.body);
+
+/* Chạm 4 ảnh vườn để xem phóng to */
+initLightbox($$(".sec--garden .g"), $("#lightbox"));
 
 /* ---------- Router theo hash: #/ · #/invitation · #/details · #/story ---------- */
 const ROUTES = { "": "envelope", "#/": "envelope", "#/invitation": "invitation", "#/details": "details", "#/story": "story" };

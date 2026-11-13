@@ -294,6 +294,23 @@
   <ul class="wishes__list" id="wishes-all"></ul>
 </dialog>
 
+<!-- ============ XEM ẢNH PHÓNG TO (4 ảnh vườn) ============ -->
+<dialog class="lightbox" id="lightbox" aria-label="Xem ảnh phóng to">
+  <button class="lightbox__close" type="button" data-close-lightbox aria-label="Đóng">✕</button>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Ảnh trước">‹</button>
+  <figure class="lightbox__stage">
+    <img class="lightbox__img is-loading" alt="" width="733" height="1100">
+    <figcaption class="lightbox__cap"></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Ảnh sau">›</button>
+  <p class="lightbox__count" aria-live="polite"></p>
+  <div class="lightbox__zoom" role="group" aria-label="Phóng to / thu nhỏ">
+    <button type="button" data-zoom="out" aria-label="Thu nhỏ">−</button>
+    <button type="button" class="lightbox__level" data-zoom="reset" aria-label="Về kích thước gốc">100%</button>
+    <button type="button" data-zoom="in" aria-label="Phóng to">+</button>
+  </div>
+</dialog>
+
 <!-- ============ HỘP QUÀ MỪNG CƯỚI ============ -->
 <dialog class="gift-dialog" id="gift-dialog" aria-labelledby="gift-title">
   <button class="gift-dialog__close" type="button" data-close-gift aria-label="Đóng">✕</button>

@@ -379,6 +379,37 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .gift-fab svg, .music-fab svg { display: block; flex: none; }
 @media (hover: hover) { .gift-fab:hover { transform: scale(1.08) rotate(-6deg); } }
 .gift-fab svg { width: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* Xem ảnh phóng to (4 ảnh vườn) */
+.sec--garden .g { cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+@media (hover: hover) { .sec--garden .g:hover { filter: brightness(1.06) saturate(1.05); } }
+.lightbox { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--cream-50); overflow: hidden; }
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox::backdrop { background: rgb(22 7 9 / 0.94); backdrop-filter: blur(4px); }
+.lightbox__stage { margin: 0; display: grid; justify-items: center; gap: 0.8rem; padding: 3.4rem 0.8rem 3.6rem; max-width: 100vw; max-height: 100svh; }
+.lightbox__img { display: block; width: auto; height: auto; max-width: min(94vw, 880px); max-height: calc(100svh - 9rem); object-fit: contain; border-radius: 4px; box-shadow: 0 24px 60px rgb(0 0 0 / 0.55); touch-action: none; user-select: none; -webkit-user-drag: none; transform-origin: center; transition: opacity 0.25s ease, transform 0.22s var(--ease-out); cursor: zoom-in; will-change: transform; }
+.lightbox__stage { touch-action: none; }
+.lightbox.is-zoomed .lightbox__img { cursor: grab; }
+.lightbox__cap, .lightbox__count { transition: opacity 0.2s; }
+.lightbox.is-zoomed .lightbox__cap, .lightbox.is-zoomed .lightbox__count { opacity: 0; pointer-events: none; }
+.lightbox.is-dragging .lightbox__img { transition: opacity 0.25s ease; cursor: grabbing; }
+.lightbox__zoom { position: absolute; z-index: 2; top: 0.7rem; left: 0.7rem; display: flex; align-items: center; height: 46px; border-radius: 23px; background: rgb(22 7 9 / 0.5); backdrop-filter: blur(6px); overflow: hidden; }
+.lightbox__zoom button { height: 100%; border: 0; background: transparent; color: var(--cream-50); cursor: pointer; font: inherit; -webkit-tap-highlight-color: transparent; transition: background 0.25s, opacity 0.25s; }
+.lightbox__zoom button[data-zoom="in"], .lightbox__zoom button[data-zoom="out"] { width: 46px; font-size: 1.6rem; line-height: 1; padding-bottom: 0.15rem; }
+.lightbox__level { min-width: 3.6rem; font-size: 0.82rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; opacity: 0.85; }
+.lightbox__zoom button:disabled { opacity: 0.3; cursor: default; }
+@media (hover: hover) { .lightbox__zoom button:not(:disabled):hover { background: rgb(251 249 247 / 0.22); } }
+.lightbox__img.is-loading { opacity: 0; }
+.lightbox[open] .lightbox__img:not(.is-loading) { animation: lb-in 0.32s var(--ease-out); }
+@keyframes lb-in { from { transform: scale(0.96); } }
+.lightbox__cap { font-style: italic; font-size: 0.95rem; opacity: 0.8; text-align: center; max-width: 30ch; }
+.lightbox__count { position: absolute; left: 0; right: 0; bottom: 1rem; margin: 0; text-align: center; letter-spacing: 0.3em; font-size: 0.85rem; text-indent: 0.3em; opacity: 0.75; }
+.lightbox__close, .lightbox__nav { position: absolute; z-index: 2; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgb(22 7 9 / 0.5); backdrop-filter: blur(6px); color: var(--cream-50); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.25s; }
+@media (hover: hover) { .lightbox__close:hover, .lightbox__nav:hover { background: rgb(251 249 247 / 0.3); } }
+.lightbox__close { top: 0.7rem; right: 0.7rem; width: 46px; height: 46px; font-size: 1.15rem; }
+.lightbox__nav { top: 50%; width: 46px; height: 46px; margin-top: -23px; font-size: 2rem; line-height: 1; padding-bottom: 0.25rem; }
+.lightbox__nav--prev { left: 0.6rem; }
+.lightbox__nav--next { right: 0.6rem; }
+@media (prefers-reduced-motion: reduce) { .lightbox[open] .lightbox__img:not(.is-loading) { animation: none; } .lightbox__img { transition: none; } }
 .gift-dialog { border: 0; padding: clamp(1.6rem, 5vw, 2.4rem) clamp(1.2rem, 5vw, 2.4rem); background: var(--cream-50); color: var(--bordeaux-700); width: min(420px, calc(100vw - 2rem)); max-height: calc(100svh - 2rem); overflow: auto; border-radius: 2px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.4); text-align: center; }
 .gift-dialog[open] { display: grid; gap: 0.9rem; justify-items: center; }
 .gift-dialog::backdrop { background: rgb(62 21 25 / 0.62); backdrop-filter: blur(3px); }
