@@ -270,37 +270,6 @@ a { color: inherit; }
 .detail__time { letter-spacing: 0.15em; font-size: clamp(1.05rem, 0.9rem + 0.9vw, 1.7rem); }
 .detail__date { font-weight: 600; letter-spacing: 0.15em; font-size: clamp(2rem, 1.2rem + 3vw, 3.4rem); }
 .detail__lunar { font-style: italic; color: var(--bordeaux-500); font-size: clamp(1rem, 0.9rem + 0.5vw, 1.3rem); }
-.cal { position: relative; display: grid; gap: clamp(1.4rem, 3vw, 2.2rem); justify-items: center; align-items: center; width: min(700px, 100%); margin-top: 1.8rem; padding: clamp(1.8rem, 4vw, 2.6rem) clamp(1.2rem, 4vw, 2.4rem); background: var(--cream-100); box-shadow: 0 18px 40px rgb(62 21 25 / 0.15); }
-.cal::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgb(184 147 90 / 0.6); pointer-events: none; }
-@media (min-width: 640px) {
-  /* Hai cột (tờ lịch | nội dung) co theo nội dung rồi cả cặp nằm chính giữa khung; chữ và nút căn giữa theo trục của cột phải */
-  .cal { grid-template-columns: auto auto; justify-content: center; column-gap: clamp(2rem, 4vw, 3.2rem); text-align: center; padding: clamp(2.2rem, 4vw, 3rem) clamp(2.2rem, 5vw, 3.4rem); }
-  .cal .cal__body { justify-items: center; justify-self: center; text-align: center; }
-  .cal__body > * { margin: 0; }
-  .cal__body .script--lg { font-size: clamp(1.9rem, 1.2rem + 1.4vw, 2.5rem); line-height: 1.15; white-space: nowrap; }
-  .cal__hint { text-align: center; }
-}
-.cal__page { position: relative; width: 148px; padding-bottom: 1rem; display: grid; justify-items: center; background: var(--cream-50); border-radius: 4px 4px 6px 6px; box-shadow: 0 12px 26px rgb(62 21 25 / 0.22), 0 0 0 1px rgb(184 147 90 / 0.35); transform: rotate(-3deg); overflow: hidden; }
-.cal__page::before, .cal__page::after { content: ""; position: absolute; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--cream-100); box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.4); }
-.cal__page::before { left: 22%; } .cal__page::after { right: 22%; }
-.cal__month { width: 100%; padding: 1.5rem 0 0.5rem; background: var(--bordeaux-500); color: var(--cream-50); font-size: 0.72rem; letter-spacing: 0.14em; font-weight: 600; white-space: nowrap; text-align: center; text-indent: 0.14em; }
-.cal__day { font-size: 4.4rem; line-height: 1.05; font-weight: 500; color: #863538; margin-top: 0.3rem; }
-.cal__page { text-align: center; }
-.cal__dow { text-indent: 0.3em; font-size: 0.8rem; letter-spacing: 0.3em; font-weight: 600; color: var(--bordeaux-500); }
-.cal__time { margin-top: 0.15rem; font-style: italic; font-size: 1.25rem; color: var(--gold-500); }
-.cal__body { display: grid; gap: 0.8rem; justify-items: center; }
-.cal__hint { max-width: 34ch; font-size: clamp(1rem, 0.95rem + 0.25vw, 1.15rem); }
-.cal__note { margin: 0.1rem 0 0; max-width: 32ch; display: grid; gap: 0.5rem; justify-items: center; text-align: center; }
-.cal__note[hidden] { display: none; }
-.cal__note p { margin: 0; font-size: 0.85rem; line-height: 1.5; font-style: italic; color: var(--bordeaux-500); }
-.cal__actions { display: grid; gap: 0.75rem; width: min(300px, 100%); margin-top: 0.4rem; justify-items: stretch; }
-.cal .btn { display: grid; gap: 0.15rem; text-decoration: none; text-align: center; padding: 0.85rem 1.2rem; letter-spacing: 0.2em; font-size: clamp(0.85rem, 0.8rem + 0.25vw, 1rem); }
-.cal .btn small { font-size: 0.78rem; letter-spacing: 0.08em; font-style: italic; opacity: 0.85; }
-/* Chữ trong nút căn giữa thật: bù khoảng trống letter-spacing ở cuối dòng; dấu ✓ đặt riêng ở mép phải để không kéo lệch chữ */
-.cal .btn span { text-indent: 0.2em; }
-.cal .btn small { text-indent: 0.08em; }
-.cal .btn[data-best] { position: relative; }
-.cal .btn[data-best]::after { content: "✓"; position: absolute; top: 50%; right: 1.1rem; transform: translateY(-50%); letter-spacing: 0; font-size: 1.05rem; line-height: 1; }
 /* Nút xác nhận tham dự đặt ngay dưới bản đồ ở trang "Thời gian & Địa điểm"; chân trang của trang này bỏ nút và thu ngắn lại */
 .detail > .rsvp-cta { margin-top: 0.6rem; }
 #view-details .ft__btn { display: none; }
@@ -317,7 +286,6 @@ a { color: inherit; }
 .swatches li img { display: block; width: 100%; height: auto; }
 .qr { margin: 1.3rem 0 0; display: grid; gap: 0.75rem; justify-items: center; }
 .qr img { width: min(228px, 62vw); height: auto; border-radius: 16px; border: 1px solid var(--cream-200); box-shadow: 0 10px 26px rgb(62 21 25 / 0.14); background: #f5f0e8; }
-.qr figcaption { font-style: italic; color: var(--bordeaux-500); font-size: clamp(0.9rem, 0.86rem + 0.25vw, 1.05rem); max-width: 22rem; }
 
 /* ============ LOVE STORY ============ */
 @keyframes beat { 50% { transform: scale(1.08); } }
@@ -430,7 +398,7 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .lightbox__nav--prev { left: 0.6rem; }
 .lightbox__nav--next { right: 0.6rem; }
 @media (prefers-reduced-motion: reduce) { .lightbox[open] .lightbox__img:not(.is-loading) { animation: none; } .lightbox__img { transition: none; } }
-.gift-dialog { border: 0; padding: clamp(1.6rem, 5vw, 2.4rem) clamp(1.2rem, 5vw, 2.4rem); background: var(--cream-50); color: var(--bordeaux-700); width: min(420px, calc(100vw - 2rem)); max-height: calc(100svh - 2rem); overflow: auto; border-radius: 2px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.4); text-align: center; }
+.gift-dialog { border: 0; padding: clamp(1.6rem, 5vw, 2.4rem) clamp(1.2rem, 5vw, 2.4rem); background: var(--cream-50); color: var(--bordeaux-500); width: min(420px, calc(100vw - 2rem)); max-height: calc(100svh - 2rem); overflow: auto; border-radius: 2px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.4); text-align: center; }
 .gift-dialog[open] { display: grid; gap: 0.9rem; justify-items: center; }
 .gift-dialog::backdrop { background: rgb(62 21 25 / 0.62); backdrop-filter: blur(3px); }
 .gift-dialog__icon { width: 64px; height: auto; }
@@ -454,7 +422,7 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) { .gift-fab svg, .music-fab svg { animation: none; } }
 
 /* ============ RSVP DIALOG ============ */
-.rsvp { border: 0; padding: 0; background: var(--cream-50); color: var(--bordeaux-700); width: min(520px, calc(100vw - 2rem)); max-height: calc(100svh - 2rem); border-radius: 2px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.4); text-align: left; }
+.rsvp { border: 0; padding: 0; background: var(--cream-50); color: var(--bordeaux-500); width: min(520px, calc(100vw - 2rem)); max-height: calc(100svh - 2rem); border-radius: 2px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.4); text-align: left; }
 .rsvp::backdrop { background: rgb(62 21 25 / 0.62); backdrop-filter: blur(3px); }
 .rsvp form { padding: clamp(1.5rem, 5vw, 2.6rem); display: grid; gap: 1.1rem; }
 .rsvp h2 { text-align: center; }
@@ -593,10 +561,13 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) { .gift-open { animation: none; } }
 /* Popup quà: QR tự co theo chiều cao màn để nút lưu ảnh luôn nằm trong tầm nhìn, không phải cuộn */
 .gift-dialog .qr { margin: 0.2rem 0 0; gap: 0.7rem; }
-.gift-dialog .qr img { width: min(220px, 58vw, calc((100svh - 372px) * 0.675)); min-width: 140px; }
-.gift-dialog .qr figcaption { max-width: 26ch; font-size: 0.9rem; line-height: 1.45; text-wrap: balance; }
+.gift-dialog .qr img { width: min(220px, 58vw, calc((100svh - 580px) * 0.675)); min-width: 140px; }
 .gift-dialog__lead { margin: 0; max-width: 26ch; font-weight: 700; font-size: 1.08rem; line-height: 1.45; text-wrap: balance; }
 .gift-dialog__note { margin: 0; font-style: italic; font-size: 0.98rem; opacity: 0.85; }
+/* Thông tin tài khoản + nút sao chép trong hộp quà (cùng kiểu bản nhà gái) */
+.gift-dialog__bank { margin: 0; text-align: center; font-size: 1rem; line-height: 1.6; }
+.gift-dialog__bank strong { font-weight: 700; }
+button.gift-dialog__save { background: none; font: inherit; font-size: 0.85rem; letter-spacing: 0.2em; cursor: pointer; }
 .gift-dialog__save { display: inline-block; padding: 0.7rem 1.5rem; border: 1px solid var(--bordeaux-500); border-radius: 2px; color: var(--bordeaux-500); text-decoration: none; letter-spacing: 0.2em; font-size: 0.85rem; text-indent: 0.2em; transition: background 0.25s, color 0.25s; }
 @media (hover: hover) { .gift-dialog__save:hover { background: var(--bordeaux-500); color: var(--cream-50); } }
 .gift-dialog__save:active { background: var(--bordeaux-500); color: var(--cream-50); }
@@ -606,7 +577,6 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   .gift-dialog__icon { width: 46px; }
   .gift-dialog .script--lg { font-size: 1.65rem; }
 }
-@media (max-height: 600px) { .gift-dialog .qr figcaption { display: none; } }
 .gift-dialog .script--lg { font-size: clamp(1.8rem, 1.4rem + 1.6vw, 2.3rem); line-height: 1.15; }
 
 /* Đồng hồ đếm ngược: bản desktop khớp embed Canva (Cardo, số 17.4cqw, nhãn 4cqw, dấu ":" giữa các cột) */
@@ -701,8 +671,6 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   #view-details .detail__venue + .detail__lunar + .detail__divider { margin-top: calc(32 * var(--du)); }
   #view-details .detail > .link { margin-top: calc(34 * var(--du)); }
   #view-details .detail > .rsvp-cta { margin-top: calc(30 * var(--du)); }
-  #view-details .detail--cal { padding: calc(10 * var(--du)) 0 calc(80 * var(--du)); }
-  #view-details .detail--cal > .cal { margin-top: 0; }
   /* khối 2: icon +52 -> tiêu đề +202 -> vệt màu +341 */
   #view-details .detail:nth-child(2) { padding: calc(52 * var(--du)) 0 calc(107 * var(--du)); }
   #view-details .detail:nth-child(2) .detail__sub { margin-top: calc(26 * var(--du)); }

@@ -1,5 +1,4 @@
 import { WEDDING_AT, timeLeft, pad2 } from "./countdown.js";
-import { EVENT, buildIcs, detectPlatform, isInAppBrowser } from "./calendar.js";
 import { fetchWishes, normalizeWishes, splitRows, wishCard } from "./wishes.js";
 import { applyNoOrphan, observeNoOrphan } from "./typography.js";
 import { initLightbox } from "./lightbox.js";
@@ -196,6 +195,23 @@ const giftDialog = $("#gift-dialog");
 const syncFab = () => { const hide = (ROUTES[location.hash] ?? "envelope") === "envelope"; fab.hidden = hide; giftFab.hidden = hide; };
 document.addEventListener("click", (e) => { if (e.target.closest("[data-open-gift]") && !giftDialog.open) giftDialog.showModal(); }); // nút nổi và hộp quà trong trang đều mở cùng một hộp thoại
 giftDialog.addEventListener("click", (e) => { if (e.target.closest("[data-close-gift]") || e.target === giftDialog) giftDialog.close(); });
+// Nút "Sao chép số tài khoản": ghi vào clipboard, đổi chữ nút 2 giây để báo đã chép
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-copy]");
+  if (!btn) return;
+  const text = btn.dataset.copy;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+    (btn.closest("dialog") ?? document.body).appendChild(ta); ta.select(); // trong hộp thoại modal thì gắn vào chính hộp thoại
+    try { document.execCommand("copy"); } finally { ta.remove(); }
+  }
+  const label = btn.textContent;
+  btn.textContent = btn.dataset.copyDone || "ĐÃ SAO CHÉP";
+  setTimeout(() => { btn.textContent = label; }, 2000);
+});
 window.addEventListener("hashchange", syncFab);
 syncFab();
 
@@ -362,68 +378,3 @@ document.addEventListener("click", (e) => {
 loadWishes();
 flushPending(); // gửi nốt lời chúc còn kẹt từ lần trước (nếu có)
 
-/* ---------- Lưu lịch: ưu tiên nút hợp với máy của khách ---------- */
-(() => {
-  const box = $(".cal__actions");
-  if (!box) return;
-  const platform = detectPlatform(navigator.userAgent, navigator.maxTouchPoints);
-  if (platform === "other") return; // máy tính: giữ nguyên cả hai nút
-  const pick = (kind) => $(`[data-cal="${kind}"]`, box);
-  // Trong Messenger/Facebook/Zalo... file lịch không mở được: ưu tiên Google Calendar và nhắc khách mở bằng Safari để dùng Lịch iPhone
-  const inApp = isInAppBrowser(navigator.userAgent);
-  const [best, other] = platform === "ios" && !inApp ? [pick("ics"), pick("google")] : [pick("google"), pick("ics")];
-  best.classList.remove("btn--ghost");
-  other.classList.add("btn--ghost");
-  best.dataset.best = "";
-  box.prepend(best); // nút hợp với máy lên đầu
-
-  if (inApp) {
-    // Trong app: thử mở bảng chia sẻ của hệ điều hành với file .ics (iPhone có mục "Lịch"/"Add to Calendar").
-    // Máy/ứng dụng nào không hỗ trợ thì hiện hướng dẫn + nút sao chép link để dán vào Safari/Chrome.
-    const help = document.createElement("div");
-    help.className = "cal__note";
-    help.hidden = true;
-    const text = document.createElement("p");
-    text.textContent = platform === "ios"
-      ? "Đang mở trong ứng dụng nên chưa thêm trực tiếp vào Lịch iPhone được. Hãy dùng Google Calendar ở trên, hoặc sao chép link rồi dán vào Safari."
-      : "Đang mở trong ứng dụng nên chưa tải được file lịch. Hãy dùng Google Calendar ở trên, hoặc sao chép link rồi dán vào Chrome.";
-    const copy = document.createElement("button");
-    copy.type = "button";
-    copy.className = "link link--small";
-    copy.textContent = "SAO CHÉP LINK";
-    copy.addEventListener("click", async () => {
-      const url = `${location.origin}${location.pathname}`;
-      try { await navigator.clipboard.writeText(url); }
-      catch { const t = document.createElement("textarea"); t.value = url; document.body.append(t); t.select(); try { document.execCommand("copy"); } catch { /* bỏ qua */ } t.remove(); }
-      copy.textContent = "ĐÃ SAO CHÉP ✓";
-    });
-    help.append(text, copy);
-    box.after(help);
-
-    pick("ics").addEventListener("click", async (e) => {
-      e.preventDefault();
-      try {
-        const file = new File([buildIcs(EVENT)], "tiec-cuoi.ics", { type: "text/calendar" });
-        if (navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title: EVENT.title }); return; }
-      } catch (err) {
-        if (err?.name === "AbortError") return; // khách tự đóng bảng chia sẻ
-      }
-      help.hidden = false;
-      help.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    });
-    return;
-  }
-
-  // iPhone: Safari có khi im lặng không làm gì với link tới file .ics. Tạo file lịch ngay trong trang (đúng UTF-8, MIME text/calendar)
-  // rồi mở bằng chính thao tác bấm của khách; nếu trình duyệt không hỗ trợ thì giữ link file như cũ.
-  if (platform === "ios" && window.Blob && window.URL?.createObjectURL) {
-    pick("ics").addEventListener("click", (e) => {
-      try {
-        const url = URL.createObjectURL(new Blob([buildIcs(EVENT)], { type: "text/calendar;charset=utf-8" }));
-        e.preventDefault();
-        location.href = url;
-        setTimeout(() => URL.revokeObjectURL(url), 120000);
-      } catch { /* để link .ics gốc chạy */ }
-    });
-  }
-})();
