@@ -3,6 +3,7 @@ import { EVENT, buildIcs, detectPlatform, isInAppBrowser } from "./calendar.js";
 import { fetchWishes, normalizeWishes, splitRows, wishCard } from "./wishes.js";
 import { applyNoOrphan, observeNoOrphan } from "./typography.js";
 import { initLightbox } from "./lightbox.js";
+import { initLayout } from "./layout.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -15,6 +16,9 @@ $$("[data-footer]").forEach((slot) => slot.replaceWith(footerTpl.content.cloneNo
 /* Chống mồ côi chữ ở mọi đoạn văn (làm trước hiệu ứng gõ chữ để NBSP được giữ lại) */
 applyNoOrphan(document.body);
 observeNoOrphan(document.body);
+
+/* Bố cục hai section ảnh (vườn + veil) theo Canva: gán --u, --off, --h… theo bề rộng khung */
+initLayout($(".sec--garden"), $(".sec--veil"));
 
 /* Chạm 4 ảnh vườn để xem phóng to */
 initLightbox($$(".sec--garden .g"), $("#lightbox"));
@@ -117,7 +121,7 @@ route();
 
 /* ---------- Tải trước toàn bộ ảnh khi trình duyệt rảnh, để chuyển trang không bị trống ---------- */
 const preloadAll = () => {
-  const urls = new Set($$("img").map((i) => i.getAttribute("src")));
+  const urls = new Set($$("img").map((i) => i.getAttribute("src")).filter(Boolean)); // ảnh popup xem ảnh chưa có src
   urls.forEach((src) => { const im = new Image(); im.decoding = "async"; im.src = src; });
 };
 const idle = window.requestIdleCallback ?? ((fn) => setTimeout(fn, 1500));
@@ -198,13 +202,17 @@ syncFab();
 /* ---------- RSVP ---------- */
 // Dán link Web app của Google Apps Script vào đây (xem apps-script/Code.gs). Để trống thì dùng Netlify Forms.
 const SHEET_URL = "https://script.google.com/macros/s/AKfycby4IYyMTYskCWZkB9gGIc2XcC_V2wR7sVb_hZc2auM69o_CYO4TYsRKNmsvy93x4BCB/exec";
-const dialog = $("#rsvp");
-const form = $("#rsvp-form");
-const msg = $("#rsvp-msg");
+// Hai biểu mẫu riêng: "Xác nhận tham dự" (có đến không, số người, lời chúc tuỳ chọn) và "Gửi lời chúc" (chỉ tên + lời chúc)
+const forms = [
+  { key: "rsvp", dialog: $("#rsvp"), form: $("#rsvp-form"), msg: $("#rsvp-msg"), thanks: "Cảm ơn bạn! Chúng mình đã nhận được xác nhận ♥" },
+  { key: "wish", dialog: $("#wish"), form: $("#wish-form"), msg: $("#wish-msg"), thanks: "Cảm ơn bạn! Chúng mình đã nhận được lời chúc ♥" },
+];
 
 document.addEventListener("click", (e) => {
-  if (e.target.closest("[data-open-rsvp]")) { msg.textContent = ""; msg.classList.remove("is-error"); dialog.showModal(); }
-  if (e.target.closest("[data-close-rsvp]") || e.target === dialog) dialog.close();
+  for (const f of forms) {
+    if (e.target.closest(`[data-open-${f.key}]`)) { f.msg.textContent = ""; f.msg.classList.remove("is-error"); f.dialog.showModal(); }
+    if (e.target.closest(`[data-close-${f.key}]`) || e.target === f.dialog) f.dialog.close();
+  }
 });
 
 /* Gửi lời chúc: báo "cảm ơn" và hiện thẻ của khách ngay (Apps Script trả lời mất ~1,5–3 giây), việc gửi chạy ngầm.
@@ -247,19 +255,21 @@ async function flushPending() {
 }
 addEventListener("online", flushPending);
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const submit = $("button[type=submit]", form);
-  const data = new FormData(form);
-  const body = new URLSearchParams(data).toString();
-  submit.disabled = true; // tránh bấm hai lần trong lúc hộp thoại chưa đóng
-  msg.classList.remove("is-error");
-  msg.textContent = "Cảm ơn bạn! Chúng mình đã nhận được lời chúc ♥";
-  showOwnWish(String(data.get("ten") ?? ""), String(data.get("loi-chuc") ?? ""));
-  form.reset();
-  deliver(body).then((ok) => { if (!ok) writePending([...readPending(), body]); });
-  setTimeout(() => { dialog.close(); submit.disabled = false; }, 1600);
-});
+for (const { form, dialog, msg, thanks } of forms) {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const submit = $("button[type=submit]", form);
+    const data = new FormData(form);
+    const body = new URLSearchParams(data).toString();
+    submit.disabled = true; // tránh bấm hai lần trong lúc hộp thoại chưa đóng
+    msg.classList.remove("is-error");
+    msg.textContent = thanks;
+    showOwnWish(String(data.get("ten") ?? ""), String(data.get("loi-chuc") ?? "")); // xác nhận không kèm lời chúc thì không có thẻ để hiện
+    form.reset();
+    deliver(body).then((ok) => { if (!ok) writePending([...readPending(), body]); });
+    setTimeout(() => { dialog.close(); submit.disabled = false; }, 1600);
+  });
+}
 
 /* ---------- Lời chúc: đọc từ Google Sheet ---------- */
 // Ít lời chúc → xếp lưới tĩnh. Nhiều → tự trôi ngang (2 hàng ngược chiều), rê chuột/chạm để dừng, "Xem tất cả" mở hộp cuộn.

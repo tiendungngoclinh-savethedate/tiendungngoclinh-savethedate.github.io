@@ -127,7 +127,7 @@
     <ul class="wishes__list" id="wishes-list"></ul>
     <div class="marquee" id="wishes-marquee" hidden></div>
     <button class="link link--light" id="wishes-all-btn" type="button" data-open-wishes hidden>XEM TẤT CẢ LỜI CHÚC</button>
-    <button class="btn btn--light" type="button" data-open-rsvp>GỬI LỜI CHÚC</button>
+    <button class="btn btn--light" type="button" data-open-wish>GỬI LỜI CHÚC</button>
   </section>
 
   <div class="ringbanner" aria-hidden="true">
@@ -152,22 +152,7 @@
     <p class="detail__lunar">Đường Mậu Lương, Phường Kiến Hưng, Hà Nội</p>
     <img class="detail__divider" src="assets/details/divider.webp" alt="" width="1012" height="25">
     <a class="link" href="https://maps.app.goo.gl/2k6Feu8cqXLHPowf6" target="_blank" rel="noopener">XEM BẢN ĐỒ →</a>
-    <section class="cal" aria-labelledby="cal-title">
-      <div class="cal__page" aria-hidden="true">
-        <span class="cal__month">THÁNG 11 · 2026</span>
-        <b class="cal__day">29</b>
-        <span class="cal__dow">CHỦ NHẬT</span>
-        <span class="cal__time">10:00</span>
-      </div>
-      <div class="cal__body">
-        <h2 id="cal-title" class="display script--lg">Lưu ngày vui vào lịch</h2>
-        <p class="cal__hint">Bấm một nút, điện thoại tự điền sẵn ngày giờ, địa điểm và nhắc bạn trước 1 ngày.</p>
-        <div class="cal__actions">
-          <a class="btn" data-cal="ics" href="assets/calendar/tiec-cuoi.ics"><span>THÊM VÀO LỊCH</span><small>iPhone · Apple · Outlook</small></a>
-          <a class="btn btn--ghost" data-cal="google" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=L%E1%BB%85+c%C6%B0%E1%BB%9Bi+Ti%E1%BA%BFn+D%C5%A9ng+%26+Ng%E1%BB%8Dc+Linh&amp;dates=20261129T100000%2F20261129T130000&amp;ctz=Asia%2FHo_Chi_Minh&amp;details=Ti%E1%BB%87c+c%C6%B0%E1%BB%9Bi+l%C3%BAc+10%3A00+%28gi%E1%BB%9D+Vi%E1%BB%87t+Nam%29.+Tr%C3%A2n+tr%E1%BB%8Dng+k%C3%ADnh+m%E1%BB%9Di+b%E1%BA%A1n+%C4%91%E1%BA%BFn+d%E1%BB%B1+ti%E1%BB%87c+c%C6%B0%E1%BB%9Bi+c%E1%BB%A7a+Ti%E1%BA%BFn+D%C5%A9ng+v%C3%A0+Ng%E1%BB%8Dc+Linh.+Thi%E1%BB%87p+m%E1%BB%9Di%3A+https%3A%2F%2Ftiendungngoclinh-savethedate.io.vn&amp;location=Nh%C3%A0+v%C4%83n+ho%C3%A1+T%E1%BB%95+d%C3%A2n+ph%E1%BB%91+12%2C+%C4%90%C6%B0%E1%BB%9Dng+M%E1%BA%ADu+L%C6%B0%C6%A1ng%2C+Ph%C6%B0%E1%BB%9Dng+Ki%E1%BA%BFn+H%C6%B0ng%2C+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener"><span>GOOGLE CALENDAR</span><small>Android · Gmail</small></a>
-        </div>
-      </div>
-    </section>
+    <button class="btn rsvp-cta" type="button" data-open-rsvp>XÁC NHẬN THAM DỰ</button>
   </div>
 
   <div class="detail detail--tight" data-reveal>
@@ -185,6 +170,25 @@
     <h2 class="detail__sub display script--xl">Quà cưới</h2>
     <p class="detail__gift"><strong>Sự có mặt của anh/ chị/ bạn chính là món quà quý giá nhất đối với chúng em/ chúng mình.</strong></p>
     <p class="detail__gift">Nếu muốn gửi gắm yêu thương từ xa,<br>anh/chị/bạn vui lòng chạm vào hộp&nbsp;quà phía trên.</p>
+  </div>
+
+  <div class="detail detail--tight detail--cal" data-reveal>
+    <section class="cal" aria-labelledby="cal-title">
+      <div class="cal__page" aria-hidden="true">
+        <span class="cal__month">THÁNG 11 · 2026</span>
+        <b class="cal__day">29</b>
+        <span class="cal__dow">CHỦ NHẬT</span>
+        <span class="cal__time">10:00</span>
+      </div>
+      <div class="cal__body">
+        <h2 id="cal-title" class="display script--lg">Lưu ngày vui vào lịch</h2>
+        <p class="cal__hint">Bấm một nút, điện thoại tự điền sẵn ngày giờ, địa điểm và nhắc bạn trước 1 ngày.</p>
+        <div class="cal__actions">
+          <a class="btn" data-cal="ics" href="assets/calendar/tiec-cuoi.ics"><span>THÊM VÀO LỊCH</span><small>iPhone · Apple · Outlook</small></a>
+          <a class="btn btn--ghost" data-cal="google" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=L%E1%BB%85+c%C6%B0%E1%BB%9Bi+Ti%E1%BA%BFn+D%C5%A9ng+%26+Ng%E1%BB%8Dc+Linh&amp;dates=20261129T100000%2F20261129T130000&amp;ctz=Asia%2FHo_Chi_Minh&amp;details=Ti%E1%BB%87c+c%C6%B0%E1%BB%9Bi+l%C3%BAc+10%3A00+%28gi%E1%BB%9D+Vi%E1%BB%87t+Nam%29.+Tr%C3%A2n+tr%E1%BB%8Dng+k%C3%ADnh+m%E1%BB%9Di+b%E1%BA%A1n+%C4%91%E1%BA%BFn+d%E1%BB%B1+ti%E1%BB%87c+c%C6%B0%E1%BB%9Bi+c%E1%BB%A7a+Ti%E1%BA%BFn+D%C5%A9ng+v%C3%A0+Ng%E1%BB%8Dc+Linh.+Thi%E1%BB%87p+m%E1%BB%9Di%3A+https%3A%2F%2Ftiendungngoclinh-savethedate.io.vn&amp;location=Nh%C3%A0+v%C4%83n+ho%C3%A1+T%E1%BB%95+d%C3%A2n+ph%E1%BB%91+12%2C+%C4%90%C6%B0%E1%BB%9Dng+M%E1%BA%ADu+L%C6%B0%C6%A1ng%2C+Ph%C6%B0%E1%BB%9Dng+Ki%E1%BA%BFn+H%C6%B0ng%2C+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener"><span>GOOGLE CALENDAR</span><small>Android · Gmail</small></a>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div data-footer></div>
@@ -221,7 +225,7 @@
     </div>
   </div>
 
-  <div class="sec sec--garden"><i class="sec__bg" data-fx="zoom" data-fx-group style="--o:.45"></i><div class="st" style="--h:791;--hd:1055">
+  <div class="sec sec--garden"><i class="sec__bg" data-fx="zoom" data-fx-group style="--o:.45"></i><div class="st">
     <img class="g g--1" data-fx="zoom" data-fx-group style="--dl:.55s" src="assets/photos/outdoor-1-alley.jpg" alt="Cặp đôi giữa hàng cây xanh" width="733" height="1100" loading="lazy">
     <img class="g g--2" data-fx="zoom" data-fx-group style="--dl:1.15s" src="assets/photos/outdoor-2-dance.jpg" alt="Cô dâu xoay váy cùng chú rể" width="733" height="1100" loading="lazy">
     <img class="g g--3" data-fx="zoom" data-fx-group style="--dl:1.69s" src="assets/photos/outdoor-3-walk.jpg" alt="Cặp đôi nắm tay đi dạo" width="718" height="1100" loading="lazy">
@@ -230,7 +234,7 @@
     <p class="st__hers" data-fx="rise" data-fx-group style="--dl:.2s">forever hers</p>
   </div></div>
 
-  <div class="sec sec--veil"><i class="sec__bg" data-fx="zoom" style="--o:.32"></i><div class="st" style="--h:644;--hd:1565">
+  <div class="sec sec--veil"><i class="sec__bg" data-fx="zoom" style="--o:.32"></i><div class="st">
     <p class="st__decided" data-fx="rise" style="--dl:.3s;--dur:.8s">We decided on forever!</p>
     <img class="v v--main" data-fx="zoom" data-fx-group style="--dl:1.15s" src="assets/photos/st-main.jpg" alt="Cặp đôi trong studio với bó hoa" width="733" height="1100" loading="lazy">
     <img class="v v--a" data-fx="zoom" data-fx-group style="--dl:.55s" src="assets/photos/st-a.jpg" alt="Cô dâu cầm hoa" width="733" height="1100" loading="lazy">
@@ -255,7 +259,7 @@
         <img src="assets/decor/floral-frame.svg" alt="" width="201" height="194" loading="lazy">
         <i class="ff-d">D</i><i class="ff-l">L</i>
       </div>
-      <button class="ft__btn" type="button" data-open-rsvp>GỬI LỜI CHÚC</button>
+      <button class="ft__btn" type="button" data-open-rsvp>XÁC NHẬN THAM DỰ</button>
     </div></div>
     <div class="sec sec--foot"><div class="st" style="--h:86;--hd:93">
       <a class="ft__back" href="#/invitation">← QUAY LẠI THIỆP MỜI</a>
@@ -269,7 +273,36 @@
   <form name="rsvp" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" id="rsvp-form">
     <input type="hidden" name="form-name" value="rsvp">
     <p hidden><label>Đừng điền <input name="bot-field"></label></p>
-    <h2 id="rsvp-title" class="display script--xl">Gửi lời chúc</h2>
+    <h2 id="rsvp-title" class="display script--xl">Xác nhận tham dự</h2>
+    <label>Họ và tên
+      <input name="ten" required autocomplete="name" maxlength="80">
+    </label>
+    <fieldset>
+      <legend>Bạn sẽ đến chứ?</legend>
+      <label class="radio"><input type="radio" name="tham-du" value="Có" required> Mình sẽ đến</label>
+      <label class="radio"><input type="radio" name="tham-du" value="Không"> Rất tiếc, mình không đến được</label>
+    </fieldset>
+    <label>Số người đi cùng (kể cả bạn)
+      <input name="so-nguoi" type="number" min="1" max="10" value="1" inputmode="numeric">
+    </label>
+    <label>Lời chúc gửi đến cô dâu chú rể
+      <textarea name="loi-chuc" rows="3" maxlength="400"></textarea>
+    </label>
+    <p class="rsvp__note">Lời chúc của bạn sẽ hiển thị trên thiệp để mọi người cùng đọc.</p>
+    <p class="rsvp__msg" id="rsvp-msg" role="status" aria-live="polite"></p>
+    <div class="rsvp__actions">
+      <button class="btn" type="submit">GỬI XÁC NHẬN</button>
+      <button class="link" type="button" data-close-rsvp>Đóng</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ============ GỬI LỜI CHÚC (chỉ tên + lời chúc, tách riêng khỏi xác nhận tham dự) ============ -->
+<dialog class="rsvp" id="wish" aria-labelledby="wish-title">
+  <form name="wish" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" id="wish-form">
+    <input type="hidden" name="form-name" value="wish">
+    <p hidden><label>Đừng điền <input name="bot-field"></label></p>
+    <h2 id="wish-title" class="display script--xl">Gửi lời chúc</h2>
     <label>Họ và tên
       <input name="ten" required autocomplete="name" maxlength="80">
     </label>
@@ -277,10 +310,10 @@
       <textarea name="loi-chuc" rows="4" maxlength="400" required></textarea>
     </label>
     <p class="rsvp__note">Lời chúc của bạn sẽ hiển thị trên thiệp để mọi người cùng đọc.</p>
-    <p class="rsvp__msg" id="rsvp-msg" role="status" aria-live="polite"></p>
+    <p class="rsvp__msg" id="wish-msg" role="status" aria-live="polite"></p>
     <div class="rsvp__actions">
       <button class="btn" type="submit">GỬI LỜI CHÚC</button>
-      <button class="link" type="button" data-close-rsvp>Đóng</button>
+      <button class="link" type="button" data-close-wish>Đóng</button>
     </div>
   </form>
 </dialog>

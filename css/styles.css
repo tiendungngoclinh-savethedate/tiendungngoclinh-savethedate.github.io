@@ -299,6 +299,10 @@ a { color: inherit; }
 .cal .btn small { text-indent: 0.08em; }
 .cal .btn[data-best] { position: relative; }
 .cal .btn[data-best]::after { content: "✓"; position: absolute; top: 50%; right: 1.1rem; transform: translateY(-50%); letter-spacing: 0; font-size: 1.05rem; line-height: 1; }
+/* Nút xác nhận tham dự đặt ngay dưới bản đồ ở trang "Thời gian & Địa điểm"; chân trang của trang này bỏ nút và thu ngắn lại */
+.detail > .rsvp-cta { margin-top: 0.6rem; }
+#view-details .ft__btn { display: none; }
+#view-details .ft > .sec--foot:first-child .st { --h: 400 !important; --hd: 440 !important; }
 .btn--ghost { background: transparent; color: var(--bordeaux-500); box-shadow: inset 0 0 0 1px var(--bordeaux-500); }
 .btn--ghost:hover { background: var(--bordeaux-500); color: var(--cream-50); }
 .detail__venue { font-weight: 600; letter-spacing: 0.1em; font-size: clamp(1.15rem, 0.9rem + 1.4vw, 2rem); max-width: var(--measure); margin-top: 0.8rem; }
@@ -333,22 +337,29 @@ a { color: inherit; }
 .st__play[aria-pressed="true"] svg { animation: beat 2s ease-in-out infinite; }
 .st__tap { left: calc(120 * var(--u)); top: calc(207 * var(--u)); width: calc(280 * var(--u)); font: 400 calc(20.64 * var(--u)) / calc(28.4 * var(--u)) "Canva Digits", Georgia, serif; color: #fff; text-align: center; white-space: nowrap; }
 
-/* Nền cỏ của Canva: lớp ảnh rộng Lw = max(bề ngang, 1,1993 × cao khối), ảnh = 1,284 × Lw (tỉ lệ 3:2), căn giữa dọc, lệch ngang 37% (đo ở 520/985/1265/1905px) */
-.sec--garden { --hs: calc(min(100cqw, 560px) * 791 / 520); --lw: max(100cqw, calc(1.1993 * var(--hs))); }
-.sec--garden .sec__bg { background: url("../assets/decor/bg-garden.webp") 0 0 / 100% 100% no-repeat; inset: auto; width: calc(var(--lw) * 1.28409); height: calc(var(--lw) * 0.85606); left: calc(50cqw - var(--lw) * 0.60508); top: calc((var(--hs) - var(--lw) * 0.85606) / 2); }
+/* Hai section ảnh (vườn + veil) theo trang Canva đã sửa: mọi số đo tính bằng đơn vị thiết kế u (khổ máy tính 1265).
+   --u (px mỗi đơn vị), --off (lệch dọc), --h (chiều cao), --m (lề chữ), --bgw (rộng ảnh nền vườn), --sv, --cs do js/layout.js gán theo bề rộng khung
+   (Canva không co đều theo tỉ lệ ở điện thoại/máy tính bảng). Giá trị dưới đây chỉ là dự phòng trước khi JS chạy. */
+.sec--garden, .sec--veil { --u: calc(100cqw / 1214); --off: 34px; --h: calc(1595.5 * var(--u) + 75px); --m: calc(100cqw * 0.08); --bgw: calc(100cqw * 4.29); --sv: calc(19.8 * var(--u)); --cs: 378.7; }
+.sec--garden .st, .sec--veil .st { --u: inherit; width: 100%; margin: 0; height: var(--h); aspect-ratio: auto; }
+/* Nền cỏ: ảnh 3:2 rộng --bgw, lệch trái 41% bề rộng ảnh so với tâm khung, sát mép trên (đo ở 320–1905px) */
+.sec--garden .sec__bg { background: url("../assets/decor/bg-garden.webp") 0 0 / 100% 100% no-repeat; inset: auto; width: var(--bgw); height: calc(var(--bgw) / 1.5); left: calc(50% - var(--bgw) * 0.4101); top: calc(var(--bgw) * -0.00229); }
 .sec .st { z-index: 1; }
 p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
-.g { width: calc(200 * var(--u)); height: calc(300 * var(--u)); object-fit: cover; }
-.g--1 { left: calc(50 * var(--u)); top: calc(88 * var(--u)); }
-.g--2 { left: calc(270 * var(--u)); top: calc(88 * var(--u)); }
-.g--3 { left: calc(50 * var(--u)); top: calc(400 * var(--u)); }
-.g--4 { left: calc(270 * var(--u)); top: calc(400 * var(--u)); }
-.st__his, .st__hers { left: calc(21 * var(--u)); width: calc(478 * var(--u)); font: 400 calc(42.15 * var(--u)) / calc(42 * var(--u)) "Canva Hand", "Allura", cursive; color: #fff; white-space: nowrap; text-shadow: 0 2px 12px rgb(30 40 20 / 0.35); z-index: 2; }
-.st__his { top: calc(79 * var(--u)); text-align: left; }
-.st__hers { top: calc(662 * var(--u)); text-align: right; }
+/* Lưới 2×2 căn giữa khung: ảnh 429,8×644,7u; cột cách nhau 108,6% bề rộng ảnh, hàng cách 157,8% */
+.g { width: calc(429.8 * var(--u)); height: calc(644.7 * var(--u)); object-fit: cover; }
+.g--1 { left: calc(50% - 448.3 * var(--u)); top: calc(var(--off) + 155.7 * var(--u)); }
+.g--2 { left: calc(50% + 18.5 * var(--u)); top: calc(var(--off) + 155.7 * var(--u)); }
+.g--3 { left: calc(50% - 448.3 * var(--u)); top: calc(var(--off) + 833.8 * var(--u)); }
+.g--4 { left: calc(50% + 18.5 * var(--u)); top: calc(var(--off) + 833.8 * var(--u)); }
+/* Chữ cỡ 88,9u, khung chữ cao 119,9u (đúng như Canva), "his" căn lề trái, "hers" căn lề phải, cùng lề --m */
+.st__his, .st__hers { font: 400 calc(88.9 * var(--u)) / calc(119.9 * var(--u)) "Canva Hand", "Allura", cursive; color: #fff; white-space: nowrap; text-shadow: 0 2px 12px rgb(30 40 20 / 0.35); z-index: 2; pointer-events: none; }
+.st__his { left: var(--m); top: calc(var(--off) + 60.1 * var(--u)); text-align: left; }
+.st__hers { right: var(--m); top: calc(var(--off) + 1393.7 * var(--u)); text-align: right; }
 
-.sec--veil .sec__bg { background: url("../assets/photos/veil-bg.jpg") 26% 0 / max(113.85%, 100%) auto no-repeat; }
-.st__decided { left: calc(60 * var(--u)); top: calc(84 * var(--u)); width: calc(400 * var(--u)); font: 400 calc(33.5 * var(--u)) / calc(33 * var(--u)) "Canva Decided", "Allura", cursive; color: #863538; text-align: left; z-index: 3; }
+/* Nền veil: khung tỉ lệ 0,7928 phủ kín section (cover) và căn giữa; ảnh rộng 113,74% khung, lệch ngang 27%, sát mép trên */
+.sec--veil .sec__bg { --vbw: max(100cqw, calc(var(--h) * 0.7928)); --vbh: max(calc(100cqw * 1.2613), var(--h)); background: url("../assets/photos/veil-bg.jpg") 27% 0 / 113.74% auto no-repeat; inset: auto; width: var(--vbw); height: var(--vbh); left: calc(50% - var(--vbw) / 2); top: calc((var(--h) - var(--vbh)) / 2); }
+.st__decided { left: var(--m); top: calc(var(--off) + 136.4 * var(--u)); font: 400 calc(81.5 * var(--u)) / calc(229.6 * var(--u)) "Canva Decided", "Allura", cursive; color: #863538; text-align: left; white-space: nowrap; z-index: 3; pointer-events: none; }
 /* Cặp chân dung chú rể – cô dâu (cùng bó hoa) đặt ngay sau bộ ảnh studio, hai ảnh ngang hàng cân nhau, đỉnh ảnh vòm như khung vòm ở trang chính */
 .sec--duo { padding: clamp(2.2rem, 6vw, 5rem) 0 clamp(2.6rem, 7vw, 6rem); }
 .duo { --cap: clamp(0.85rem, 0.72rem + 0.6vw, 1.15rem); position: relative; width: min(100% - 2rem, 880px); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.8rem, 3.2vw, 2.6rem); align-items: start; }
@@ -359,11 +370,13 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .duo__heart { position: absolute; left: 50%; bottom: calc(var(--cap) * 0.26); width: calc(var(--cap) * 0.9); height: calc(var(--cap) * 0.9); margin-left: calc(var(--cap) * -0.45); fill: #863538; animation: beat 1.8s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .duo__heart { animation: none; } }
 .v { object-fit: cover; }
-.v--main { left: calc(84 * var(--u)); top: calc(144 * var(--u)); width: calc(236 * var(--u)); height: calc(354 * var(--u)); object-position: 58% 0; z-index: 1; }
-.v--a, .v--b, .v--c { left: calc(297 * var(--u)); width: calc(139 * var(--u)); height: calc(139 * var(--u)); z-index: 2; }
-.v--a { top: calc(107 * var(--u)); object-position: 50% 23%; }
-.v--b { top: calc(251 * var(--u)); object-position: 50% 10%; }
-.v--c { top: calc(396 * var(--u)); object-position: 52% 34%; }
+/* Cụm ảnh veil: ảnh lớn bên trái, ba ô vuông bên phải; --sv = độ lệch sang phải so với bố cục máy tính; ô thứ ba (--cs) to hơn từ ~590px, cùng tâm với hai ô trên */
+.v--main { left: calc(50% - 479.5 * var(--u) + var(--sv)); top: calc(var(--off) + 299.2 * var(--u)); width: calc(642.8 * var(--u)); height: calc(966.7 * var(--u)); object-position: 58.8% 0; z-index: 1; }
+.v--a, .v--b, .v--c { z-index: 2; }
+.v--a, .v--b { left: calc(50% + 100.8 * var(--u) + var(--sv)); width: calc(378.7 * var(--u)); height: calc(378.7 * var(--u)); }
+.v--a { top: calc(var(--off) + 197.9 * var(--u)); object-position: 50% 22.9%; }
+.v--b { top: calc(var(--off) + 592.2 * var(--u)); object-position: 50% 0; }
+.v--c { left: calc(50% + (290.15 - var(--cs) / 2) * var(--u) + var(--sv)); top: calc(var(--off) + (1175.85 - var(--cs) / 2) * var(--u)); width: calc(var(--cs) * var(--u)); height: calc(var(--cs) * var(--u)); object-position: 52% 34.5%; }
 
 .sec--hydra .sec__bg { background: url("../assets/decor/bg-hydrangea.webp") 50% 55.7% / cover; }
 .st__doily { left: calc(-3 * var(--u)); top: calc(1 * var(--u)); width: calc(527 * var(--u)); height: calc(464 * var(--u)); overflow: visible; }
@@ -438,8 +451,11 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .rsvp form { padding: clamp(1.5rem, 5vw, 2.6rem); display: grid; gap: 1.1rem; }
 .rsvp h2 { text-align: center; }
 .rsvp label, .rsvp legend { display: grid; gap: 0.35rem; font-size: 1rem; letter-spacing: 0.04em; font-weight: 500; }
-.rsvp input, .rsvp textarea { font: inherit; font-size: 1.1rem; padding: 0.65rem 0.8rem; border: 1px solid var(--cream-200); border-bottom-color: var(--rose-400); background: #fff; color: inherit; border-radius: 2px; }
+.rsvp fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.rsvp input:not([type="radio"]), .rsvp textarea { font: inherit; font-size: 1.1rem; padding: 0.65rem 0.8rem; border: 1px solid var(--cream-200); border-bottom-color: var(--rose-400); background: #fff; color: inherit; border-radius: 2px; }
 .rsvp input:focus, .rsvp textarea:focus { outline: 2px solid var(--gold-500); outline-offset: 1px; }
+.radio { display: flex !important; align-items: center; gap: 0.6rem !important; font-weight: 400 !important; }
+.radio input { accent-color: var(--bordeaux-500); width: 1.1rem; height: 1.1rem; }
 .rsvp__msg { min-height: 1.4em; text-align: center; font-style: italic; }
 .rsvp__msg.is-error { color: #a1262b; }
 .rsvp__actions { display: grid; gap: 0.6rem; justify-items: center; }
@@ -465,16 +481,6 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   .sec--damask .sec__bg { background-position: 50% 52.6%; }
   .st__play { left: calc(550 * var(--u)); top: calc(50 * var(--u)); width: calc(165 * var(--u)); height: calc(166 * var(--u)); }
   .st__tap { left: calc(482 * var(--u)); top: calc(223 * var(--u)); width: calc(302 * var(--u)); font-size: calc(22.2 * var(--u)); line-height: calc(30.6 * var(--u)); }
-  .sec--garden { --hs: calc(100cqw * 1055 / 1265); }
-  .g { width: calc(274 * var(--u)); height: calc(411 * var(--u)); }
-  .g--1 { left: calc(348 * var(--u)); top: calc(105 * var(--u)); } .g--2 { left: calc(646 * var(--u)); top: calc(105 * var(--u)); } .g--3 { left: calc(348 * var(--u)); top: calc(538 * var(--u)); } .g--4 { left: calc(646 * var(--u)); top: calc(538 * var(--u)); }
-  .st__his, .st__hers { left: calc(223 * var(--u)); width: calc(819 * var(--u)); font-size: calc(79 * var(--u)); line-height: calc(78.7 * var(--u)); }
-  .st__his { top: calc(88 * var(--u)); } .st__hers { top: calc(875 * var(--u)); }
-  .sec--veil .sec__bg { background-position: 27% 0; }
-  .st__decided { left: calc(146 * var(--u)); top: calc(201 * var(--u)); width: calc(973 * var(--u)); font-size: calc(81.5 * var(--u)); line-height: calc(80.6 * var(--u)); }
-  .v--main { left: calc(205 * var(--u)); top: calc(352 * var(--u)); width: calc(573 * var(--u)); height: calc(862 * var(--u)); object-position: 57% 0; }
-  .v--a, .v--b, .v--c { left: calc(722 * var(--u)); width: calc(338 * var(--u)); height: calc(338 * var(--u)); }
-  .v--a { top: calc(262 * var(--u)); } .v--b { top: calc(613 * var(--u)); } .v--c { top: calc(964 * var(--u)); }
   .sec--hydra .sec__bg { background-position: 50% 52.3%; }
   .st__doily { left: calc(349 * var(--u)); top: calc(1 * var(--u)); width: calc(567 * var(--u)); height: calc(500 * var(--u)); }
   .st__doily > img { left: 0; width: calc(567 * var(--u)); height: calc(500 * var(--u)); }
@@ -548,19 +554,14 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   .sec--damask .st__tap { left: calc(50% - (267.4px + 4.7cqw) / 2); top: calc(203px + 2.94cqw); width: calc(267.4px + 4.7cqw); font-size: calc(20.2px + 0.294cqw); line-height: 1.37; }
 }
 
-/* Garden + hydrangea ở 900–1109px: Canva giữ nguyên bố cục khổ 1265 nhưng đơn vị u tăng chậm theo bề rộng (≈ 0,9015 + 0,00014 × bề rộng; đo ở 905/985/1085px), khối căn giữa và bị cắt hai bên. Từ ~1115px Canva quay lại u = bề rộng / 1265. Khối veil luôn theo bề rộng / 1265. */
+/* Hydrangea ở 900–1109px: Canva giữ nguyên bố cục khổ 1265 nhưng đơn vị u tăng chậm theo bề rộng (≈ 0,9015 + 0,00014 × bề rộng; đo ở 905/985/1085px), khối căn giữa và bị cắt hai bên. Từ ~1115px Canva quay lại u = bề rộng / 1265. Khối veil luôn theo bề rộng / 1265. */
 @media (min-width: 900px) and (max-width: 1109px) {
-  .sec--garden .st, .sec--hydra .st { --u: calc(0.9015px + 0.013989cqw); width: calc(1265 * var(--u)); margin: 0 0 0 calc(50cqw - 632.5 * var(--u)); }
-  .sec--garden { --hs: calc(1055 * (0.9015px + 0.013989cqw)); }
+  .sec--hydra .st { --u: calc(0.9015px + 0.013989cqw); width: calc(1265 * var(--u)); margin: 0 0 0 calc(50cqw - 632.5 * var(--u)); }
 }
 
 /* Từ 1200px: Canva phóng bố cục khổ 1265 theo bề rộng (u = bề rộng / 1265) tới 1265px, sau đó chậm lại (≈ +0,05% mỗi px; 1425px → 1,08), dừng ở 1,08 (đo ở 1190, 1265, 1425 và 1920px); khối căn giữa */
 @media (min-width: 1200px) {
   .st { --u: min(1.08px, calc(100cqw / 1265), calc(0.3675px + 0.05cqw)); width: calc(1265 * var(--u)); }
-  /* Ảnh nền "veil" của Canva chỉ nằm trong khung nội dung (1366px ở 1920px), không trải kín màn như ảnh nền hoa/hydrangea; ảnh rộng 113,75% khung đó */
-  .sec--garden { --hs: calc(1055 * min(1.08px, calc(100cqw / 1265), calc(0.3675px + 0.05cqw))); }
-  .sec--veil { --veil-w: min(100cqw, calc(1265 * min(1.08px, calc(100cqw / 1265), calc(0.3675px + 0.05cqw)))); }
-  .sec--veil .sec__bg { inset: 0 auto 0 50%; width: var(--veil-w); margin-left: calc(var(--veil-w) / -2); }
 }
 
 /* Hộp quà trong trang: bấm để mở mã QR, lắc nhẹ để mời chạm */
@@ -664,7 +665,7 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   #view-details .detail { --du: calc(0.9015px + 0.013989cqw); gap: 0; padding: 0; letter-spacing: 0.05em; }
   #view-details .detail > * { margin-top: 0; margin-bottom: 0; }
   #view-details .detail__label, #view-details .detail__time, #view-details .detail__date, #view-details .detail__venue, #view-details .detail__lunar, #view-details .detail > .link { letter-spacing: 0.05em; }
-  #view-details .detail__title { font-size: calc(59.3 * var(--du)); line-height: calc(84 * var(--du)); font-weight: 500; margin-top: calc(23 * var(--du)); letter-spacing: 0; white-space: nowrap; }
+  #view-details .detail__title { font-size: calc(59.3 * var(--du)); line-height: calc(84 * var(--du)); font-weight: 500; margin-top: calc(8 * var(--du)); letter-spacing: 0; white-space: nowrap; }
   #view-details .detail__divider { width: calc(506 * var(--du)); height: calc(12.65 * var(--du)); }
   #view-details .detail__label { font-size: calc(29.6 * var(--du)); line-height: calc(30 * var(--du)); font-weight: 700; }
   #view-details .detail__time { font-size: calc(29.6 * var(--du)); line-height: calc(30 * var(--du)); font-weight: 400; }
@@ -679,18 +680,20 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
   #view-details .detail__icon--sm { width: calc(121 * var(--du)); }
   #view-details .gift-open .detail__icon--sm { width: calc(165 * var(--du)); }
 
-  /* khối 1: icon top 70 -> tiêu đề 226 -> đường kẻ 340 -> các dòng -> đường kẻ 825 -> link 900 */
-  #view-details .detail:nth-child(1) { padding: calc(70 * var(--du)) 0 calc(132 * var(--du)); }
-  #view-details .detail:nth-child(1) .detail__divider:nth-of-type(1) { margin-top: calc(30 * var(--du)); }
-  #view-details .detail__label { margin-top: calc(38 * var(--du)); }
-  #view-details .detail__time { margin-top: calc(34 * var(--du)); }
-  #view-details .detail__date { margin-top: calc(39 * var(--du)); }
-  #view-details .detail__lunar { margin-top: calc(35 * var(--du)); }
-  #view-details .detail__venue { margin-top: calc(73 * var(--du)); }
-  #view-details .detail__venue + .detail__lunar { margin-top: calc(29 * var(--du)); }
-  #view-details .detail__venue + .detail__lunar + .detail__divider { margin-top: calc(50 * var(--du)); }
-  #view-details .detail > .link { margin-top: calc(56 * var(--du)); }
-  #view-details .detail > .cal { margin-top: calc(70 * var(--du)); }
+  /* khối 1: bố cục Canva nhưng nén khoảng cách dọc (~25%) để thấy gần hết thông tin và nút xác nhận trong một màn hình máy tính */
+  #view-details .detail:nth-child(1) { padding: calc(22 * var(--du)) 0 calc(70 * var(--du)); }
+  #view-details .detail:nth-child(1) .detail__divider:nth-of-type(1) { margin-top: calc(20 * var(--du)); }
+  #view-details .detail__label { margin-top: calc(24 * var(--du)); }
+  #view-details .detail__time { margin-top: calc(22 * var(--du)); }
+  #view-details .detail__date { margin-top: calc(26 * var(--du)); }
+  #view-details .detail__lunar { margin-top: calc(22 * var(--du)); }
+  #view-details .detail__venue { margin-top: calc(42 * var(--du)); }
+  #view-details .detail__venue + .detail__lunar { margin-top: calc(20 * var(--du)); }
+  #view-details .detail__venue + .detail__lunar + .detail__divider { margin-top: calc(32 * var(--du)); }
+  #view-details .detail > .link { margin-top: calc(34 * var(--du)); }
+  #view-details .detail > .rsvp-cta { margin-top: calc(30 * var(--du)); }
+  #view-details .detail--cal { padding: calc(10 * var(--du)) 0 calc(80 * var(--du)); }
+  #view-details .detail--cal > .cal { margin-top: 0; }
   /* khối 2: icon +52 -> tiêu đề +202 -> vệt màu +341 */
   #view-details .detail:nth-child(2) { padding: calc(52 * var(--du)) 0 calc(107 * var(--du)); }
   #view-details .detail:nth-child(2) .detail__sub { margin-top: calc(26 * var(--du)); }
