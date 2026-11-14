@@ -197,8 +197,10 @@ a { color: inherit; }
 .info__stage { position: relative; container-type: inline-size; width: min(100%, 560px); margin-inline: auto; aspect-ratio: 535 / 736; margin-bottom: calc(min(100%, 560px) * -0.3); }
 .info__oval { position: absolute; left: 11.6%; top: 16.03%; width: 79.25%; display: block; text-decoration: none; color: #863538; filter: drop-shadow(0 12px 18px rgb(0 0 0 / 0.35)); }
 .info__oval img { display: block; width: 100%; height: auto; }
-.info__title { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; font-family: var(--font-display); font-weight: 500; font-size: 7.6cqw; line-height: 1.1; }
-.info__more { position: absolute; left: 0; right: 0; top: 60%; text-align: center; font-size: 3.3cqw; letter-spacing: 0.03em; }
+/* hai dòng chữ là một cụm, căn giữa cả dọc lẫn ngang trong vòng ren */
+.info__text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3cqw; text-align: center; }
+.info__title { font-family: var(--font-display); font-weight: 500; font-size: 7.6cqw; line-height: 1.1; }
+.info__more { font-size: 3.3cqw; line-height: 1.1; letter-spacing: 0.03em; }
 .info__oval:hover .info__more, .info__oval:focus-visible .info__more { text-decoration: underline; text-underline-offset: 0.3em; }
 .info__glass { position: absolute; left: 77.4%; top: 20.65%; width: 15.9%; height: auto; filter: drop-shadow(0 10px 12px rgb(0 0 0 / 0.35)); }
 .info__key { position: absolute; left: 3.93%; top: 44.7%; width: 32.9%; filter: drop-shadow(0 10px 12px rgb(0 0 0 / 0.4)); }
@@ -618,8 +620,8 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 @media (min-width: 900px) {
   .info { container-type: inline-size; position: relative; padding: 0; --iu: calc(0.9015px + 0.013989cqw); }
   .info::before { content: ""; display: block; height: calc(704 * var(--iu)); }
-  .info__title { font-size: 8.16cqw; top: 50%; color: #863538; }
-  .info__more { font-size: 3.1cqw; letter-spacing: 0.05em; top: 60%; }
+  .info__title { font-size: 8.16cqw; color: #863538; }
+  .info__more { font-size: 3.1cqw; letter-spacing: 0.05em; }
   .info__stage { position: absolute; top: calc(-14.9 * var(--iu)); left: calc(50% - 329.1 * var(--iu)); width: calc(643.2 * var(--iu)); margin: 0; }
 }
 @media (min-width: 1110px) {
