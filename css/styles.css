@@ -515,6 +515,7 @@ p, li, figcaption, h1, h2, h3, h4 { text-wrap: pretty; }
 .couple__who { display: grid; font: italic 400 calc(20.5 * var(--u)) / calc(28.2 * var(--u)) "Canva Body", Georgia, serif; color: #863538; text-align: center; }
 .cw--l { left: calc(21 * var(--u)); top: calc(163 * var(--u)); width: calc(185 * var(--u)); } .cw--r { left: calc(314 * var(--u)); top: calc(163 * var(--u)); width: calc(185 * var(--u)); }
 .st .lace--photo { left: calc(159 * var(--u)); top: calc(57 * var(--u)); width: calc(203 * var(--u)); }
+.nb { white-space: nowrap; }
 .iv-h { left: calc(56 * var(--u)); top: calc(255 * var(--u)); width: calc(407 * var(--u)); font: 500 calc(41 * var(--u)) / calc(48.7 * var(--u)) var(--font-display); color: #863538; text-align: center; white-space: nowrap; }
 .iv-p { font: 400 calc(22.9 * var(--u)) / calc(31.8 * var(--u)) "Canva Body", Georgia, serif; color: #863538; text-align: center; }
 .iv-p1 { left: calc(21 * var(--u)); top: calc(331 * var(--u)); width: calc(477 * var(--u)); } .iv-p2 { left: calc(21 * var(--u)); top: calc(522 * var(--u)); width: calc(477 * var(--u)); white-space: nowrap; } .iv-p3 { left: calc(21 * var(--u)); top: calc(618 * var(--u)); width: calc(477 * var(--u)); }
