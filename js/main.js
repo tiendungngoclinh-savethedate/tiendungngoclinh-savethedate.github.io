@@ -163,11 +163,11 @@ setInterval(tick, 1000);
 
 /* ---------- Nhạc nền (file MP3, chỉ phát khi bấm) ---------- */
 const fab = $("#music-fab");
-const music = new Audio("assets/audio/chi-can-co-nhau.mp3");
+const music = new Audio("assets/audio/a-thousand-years.mp3"); // Brooklyn Duo – A Thousand Years (wedding version)
 music.loop = true;
 music.preload = "none";
 let musicOn = false;
-// Tải sẵn nhạc ngay khi trang rảnh (trước cả khi ảnh các trang sau được tải), để bấm phong bì là có tiếng liền, không phải chờ tải 3,5MB
+// Tải sẵn nhạc ngay khi trang rảnh (trước cả khi ảnh các trang sau được tải), để bấm phong bì là có tiếng liền, không phải chờ tải ~4,8MB
 window.addEventListener("load", () => idle(() => { if (!musicOn) { music.preload = "auto"; music.load(); } }));
 
 function renderMusic(on) {
