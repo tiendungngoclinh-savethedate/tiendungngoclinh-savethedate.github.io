@@ -5,9 +5,15 @@
 
 const DESIGN_H = 1595.5;   // chiều cao thiết kế của mỗi section (đơn vị u)
 const GARDEN_M3 = 171.2;   // lề chữ "Eternally his" ở bố cục máy tính (u)
+const VEIL_M3 = 113.2;     // lề tiêu đề "We decided on forever!" ở bố cục máy tính (u)
 const BG_GARDEN_W = 2400;  // ảnh nền vườn ở bố cục máy tính (u)
+const VEIL_SHIFT = 19.8;   // cụm ảnh veil lệch sang phải so với bố cục máy tính (u)
 const BASE_W = 1265;
 const MAX_U = 1.08;
+const CS_DESKTOP = 410.9;  // ô vuông thứ ba của veil ở bố cục máy tính
+const CS_TABLET = 407.8;   // …ở máy tính bảng (từ ~590px)
+const CS_SMALL = 378.7;    // …và ở khổ điện thoại hẹp (bằng hai ô trên)
+const CS_BREAK_W = 590;
 export const R3_MIN_W = 1095;
 
 // W | uG | offG | hoffG | uV | offV | hoffV | lề chữ | rộng ảnh nền vườn
@@ -29,14 +35,6 @@ const TABLE = [
 ];
 const COLS = TABLE[0].length;
 
-/* Section veil của nhà gái: bốn khung ảnh dọc 2:3 (ảnh lớn bên trái + ba ảnh xếp dọc bên phải), đo từ Canva nhà gái.
-   Cùng hệ đơn vị u với section vườn. Chỉ lề trên G (px) thay đổi phi tuyến theo bề rộng, còn lại là bội số của u. */
-const VEIL_G = [[320, 64.7], [390, 68.8], [425, 70.4], [520, 73.9], [715, 78.7], [885, 81.5], [970, 82.5], [1075, 83.6]];
-// rộng ảnh nền veil (px) ở bố cục điện thoại / máy tính bảng
-const VEIL_BGW = [[320, 1171.1], [390, 1242.9], [425, 1272.3], [520, 1336.5], [715, 1424.3], [885, 1473.9], [970, 1493], [1075, 1513], [1095, 1517]];
-const VEIL_BG_RATIO = 1.5037; // cao / rộng của ảnh nền
-const VEIL_BG_LEFT = 0.4723;  // tâm ảnh nền lệch trái so với tâm khung: left = W/2 − 0,4723·rộng
-
 /** Nội suy tuyến tính mọi cột của bảng tại bề rộng W (kẹp ở hai đầu). */
 function row(W) {
   const last = TABLE[TABLE.length - 1];
@@ -48,55 +46,31 @@ function row(W) {
   return Array.from({ length: COLS }, (_, c) => a[c] + (b[c] - a[c]) * t);
 }
 
-
-/** Nội suy tuyến tính bảng [[W, giá trị]…] (kẹp ở hai đầu). */
-function interp(table, W) {
-  if (W <= table[0][0]) return table[0][1];
-  const last = table[table.length - 1];
-  if (W >= last[0]) return last[1];
-  const i = table.findIndex((r) => r[0] > W);
-  const [w0, v0] = table[i - 1];
-  const [w1, v1] = table[i];
-  return v0 + ((v1 - v0) * (W - w0)) / (w1 - w0);
-}
-
-/** Dựng thông số veil: x tính bằng u so với tâm khung, y/h tính bằng px. */
-function veilBlock(u, G, h, bgw, tf, d) {
-  return {
-    u, h, bgw, tf, tx: d.tx, ty: d.ty(u, G),
-    mx: d.mx, my: d.my(u, G), mw: d.mw, mh: d.mh,
-    ax: d.ax, ay: G, aw: d.aw, ah: d.ah, by: d.by(u, G),
-    cy: d.cy(u, G), cw: d.cw, ch: d.ch,
-  };
-}
-
-const VEIL_TABLET = { tx: -404.1, ty: (u, G) => G - 61.4 * u, mx: -486.6, my: (u, G) => G + 99.5 * u, mw: 769.3, mh: 1156.9,
-  ax: 185.9, aw: 294.5, ah: 442.9, by: (u, G) => G + 451.7 * u, cy: (u, G) => G + 903.8 * u, cw: 300.7, ch: 452.1 };
-const VEIL_DESKTOP = { tx: -420.3, ty: (u) => 15.6 * u, mx: -506, my: (u) => 182.9 * u, mw: 799.9, mh: 1202.9,
-  ax: 193.3, aw: 306.4, ah: 460.7, by: (u) => 549.1 * u, cy: (u) => 1019 * u, cw: 312.7, ch: 470.2 };
-
 /** Bố cục máy tính: tỉ lệ thuần, khối 1265u căn giữa. */
 function desktop(W) {
   const u = Math.min(MAX_U, W / BASE_W);
   const block = (W - BASE_W * u) / 2;
   const h = DESIGN_H * u;
-  const bgw = W <= 1265 ? 1.1376 * W : 1439.1 + (W - 1265) * 0.9037;
   return {
     garden: { u, off: 0, h, m: block + GARDEN_M3 * u, bgw: BG_GARDEN_W * u },
-    veil: veilBlock(u, 79.5 * u, 1566.9 * u, bgw, 1, VEIL_DESKTOP),
+    veil: { u, off: 0, h, m: block + VEIL_M3 * u, sv: 0, cs: CS_DESKTOP },
   };
 }
 
 /** Bố cục điện thoại / máy tính bảng: nội suy theo bảng đo. */
 function tablet(W) {
   const k = W < TABLE[0][0] ? W / TABLE[0][0] : 1; // màn hình rất hẹp: co tỉ lệ
-  const Wc = Math.max(W, TABLE[0][0]);
-  const [, uG, offG, hoffG, uV, , , m, bgw] = row(Wc);
-  const uv = uV * k;
-  const G = interp(VEIL_G, Wc) * k;
+  const [, uG, offG, hoffG, uV, offV, hoffV, m, bgw] = row(Math.max(W, TABLE[0][0]));
   return {
     garden: { u: uG * k, off: offG * k, h: (hoffG + DESIGN_H * uG) * k, m: m * k, bgw: bgw * k },
-    veil: veilBlock(uv, G, 2 * G + 1352 * uv, interp(VEIL_BGW, Wc) * k, 0.962, VEIL_TABLET),
+    veil: {
+      u: uV * k,
+      off: offV * k,
+      h: (hoffV + DESIGN_H * uV) * k,
+      m: m * k,
+      sv: VEIL_SHIFT * uV * k,
+      cs: W >= CS_BREAK_W ? CS_TABLET : CS_SMALL,
+    },
   };
 }
 
@@ -107,21 +81,13 @@ export function layoutFor(W) {
 
 const px = (v, d) => `${v.toFixed(d)}px`;
 
-/** Đổi thông số của section vườn thành các biến CSS (chuỗi) để gán vào style. */
+/** Đổi thông số của một section thành các biến CSS (chuỗi) để gán vào style. */
 export function cssVars(s) {
-  return { "--u": px(s.u, 5), "--off": px(s.off, 2), "--h": px(s.h, 2), "--m": px(s.m, 2), "--bgw": px(s.bgw, 2) };
-}
-
-/** Biến CSS của section veil: số không đơn vị là bội số của u, còn lại là px. */
-export function veilVars(s) {
-  const n = (v) => String(Math.round(v * 1000) / 1000);
-  return {
-    "--u": px(s.u, 5), "--h": px(s.h, 2), "--vbgw": px(s.bgw, 2), "--vtf": n(s.tf),
-    "--vtx": n(s.tx), "--vty": px(s.ty, 2),
-    "--vmx": n(s.mx), "--vmy": px(s.my, 2), "--vmw": n(s.mw), "--vmh": n(s.mh),
-    "--vax": n(s.ax), "--vay": px(s.ay, 2), "--vaw": n(s.aw), "--vah": n(s.ah), "--vby": px(s.by, 2),
-    "--vcy": px(s.cy, 2), "--vcw": n(s.cw), "--vch": n(s.ch),
-  };
+  const vars = { "--u": px(s.u, 5), "--off": px(s.off, 2), "--h": px(s.h, 2), "--m": px(s.m, 2) };
+  if ("bgw" in s) vars["--bgw"] = px(s.bgw, 2);
+  if ("sv" in s) vars["--sv"] = px(s.sv, 3);
+  if ("cs" in s) vars["--cs"] = String(s.cs);
+  return vars;
 }
 
 /** Gán biến bố cục cho hai section và cập nhật khi bề rộng khung đổi. */
@@ -131,8 +97,8 @@ export function initLayout(garden, veil) {
     const W = garden.clientWidth;
     if (!W) return;
     const L = layoutFor(W);
-    for (const [el, vars] of [[garden, cssVars(L.garden)], [veil, veilVars(L.veil)]]) {
-      for (const [name, value] of Object.entries(vars)) el.style.setProperty(name, value);
+    for (const [el, s] of [[garden, L.garden], [veil, L.veil]]) {
+      for (const [name, value] of Object.entries(cssVars(s))) el.style.setProperty(name, value);
     }
   };
   apply();
